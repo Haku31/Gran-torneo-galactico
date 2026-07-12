@@ -1,0 +1,27 @@
+<div class="universe" [class.warp]="showWarp()">
+  <!-- Nebulas decorativas -->
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+
+  <!-- Canvas de estrellas generado con JS -->
+  <canvas #starsCanvas class="stars-canvas"></canvas>
+
+  <!-- Contenido central -->
+  <div class="content" [class.fade-out]="showWarp()">
+    <div class="emblem">&#x2694;&#xFE0F;</div>
+    <h1 class="title">Gran Torneo Galáctico</h1>
+    <div class="divider"></div>
+    <p class="legend">
+      Cada 500 años, las especies más poderosas del universo<br>
+      participan en el <span class="highlight">Gran Torneo Galáctico</span>.<br><br>
+      Ahora tú serás parte de él.
+    </p>
+    <button class="start-btn" (click)="onStart()">
+      <span class="btn-text">Comencemos</span>
+      <span class="btn-glow"></span>
+    </button>
+  </div>
+
+  <!-- Overlay de warp -->
+  <div class="warp-overlay" [class.active]="showWarp()"></div>
+</div>

@@ -1,0 +1,266 @@
+// ============================================================
+// UNIVERSE - Base container
+// ============================================================
+.universe {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #0a0a2e 0%, #000005 60%, #000000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: 'Roboto', sans-serif;
+}
+
+// ============================================================
+// CANVAS DE ESTRELLAS
+// ============================================================
+.stars-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+// ============================================================
+// NEBULAS DECORATIVAS
+// ============================================================
+.nebula {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: nebulaDrift 20s ease-in-out infinite alternate;
+}
+
+.nebula-1 {
+  width: 600px;
+  height: 600px;
+  top: -150px;
+  left: -150px;
+  background: radial-gradient(
+    circle,
+    rgba(120, 50, 200, 0.15) 0%,
+    rgba(60, 0, 150, 0.08) 40%,
+    transparent 70%
+  );
+  animation-delay: 0s;
+}
+
+.nebula-2 {
+  width: 700px;
+  height: 700px;
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 80, 200, 0.15) 0%,
+    rgba(180, 0, 120, 0.08) 40%,
+    transparent 70%
+  );
+  animation-delay: -10s;
+}
+
+@keyframes nebulaDrift {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  50%  { transform: translate(30px, 20px) scale(1.05); opacity: 1; }
+  100% { transform: translate(-20px, 30px) scale(0.98); opacity: 0.7; }
+}
+
+// ============================================================
+// CONTENIDO CENTRAL
+// ============================================================
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem;
+  animation: fadeInUp 1.5s ease-out forwards;
+
+  &.fade-out {
+    animation: fadeOut 1s ease-in forwards;
+  }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.8); }
+}
+
+// ============================================================
+// EMBLEMA
+// ============================================================
+.emblem {
+  font-size: 4rem;
+  animation: pulse 2s ease-in-out infinite;
+  margin-bottom: 1rem;
+  display: block;
+  line-height: 1;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px gold);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 25px gold);
+  }
+}
+
+// ============================================================
+// TITULO
+// ============================================================
+.title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow:
+    0 0 30px rgba(150, 100, 255, 0.8),
+    0 0 60px rgba(150, 100, 255, 0.4);
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+}
+
+// ============================================================
+// DIVISOR
+// ============================================================
+.divider {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    #9664ff,
+    gold,
+    #9664ff,
+    transparent
+  );
+  margin: 1rem auto;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+// ============================================================
+// LEYENDA
+// ============================================================
+.legend {
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: rgba(200, 200, 255, 0.9);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 1.5rem auto 2.5rem;
+  text-shadow: 0 0 10px rgba(100, 100, 255, 0.5);
+}
+
+.highlight {
+  color: gold;
+  font-weight: bold;
+  text-shadow: 0 0 15px gold;
+}
+
+// ============================================================
+// BOTON EPICO
+// ============================================================
+.start-btn {
+  position: relative;
+  background: transparent;
+  border: 2px solid gold;
+  color: gold;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 1rem 3rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  font-family: 'Roboto', sans-serif;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 215, 0, 0.1) 50%,
+      transparent 70%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+
+  &:hover {
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow:
+      0 0 30px rgba(255, 215, 0, 0.5),
+      0 0 60px rgba(255, 215, 0, 0.2);
+    transform: scale(1.05);
+
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  .btn-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover .btn-glow {
+    opacity: 1;
+  }
+}
+
+// ============================================================
+// EFECTO WARP / HIPERESPACIO
+// ============================================================
+.universe.warp {
+  .stars-canvas {
+    animation: warpSpeed 2s ease-in forwards;
+  }
+}
+
+@keyframes warpSpeed {
+  0%   { transform: scale(1);  filter: brightness(1); }
+  50%  { transform: scale(3);  filter: brightness(3) blur(2px); }
+  100% { transform: scale(20); filter: brightness(10) blur(10px); }
+}
+
+.warp-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, white 0%, transparent 70%);
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+
+  &.active {
+    opacity: 1;
+  }
+}

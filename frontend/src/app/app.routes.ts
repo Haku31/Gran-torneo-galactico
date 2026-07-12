@@ -3,8 +3,8 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/ranking',
-    pathMatch: 'full'
+    loadComponent: () =>
+      import('./features/landing/landing.component').then(m => m.LandingComponent)
   },
   {
     path: 'species',
@@ -21,8 +21,5 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/ranking/ranking.component').then(m => m.RankingComponent)
   },
-  {
-    path: '**',
-    redirectTo: '/ranking'
-  }
+  { path: '**', redirectTo: '' }
 ];
