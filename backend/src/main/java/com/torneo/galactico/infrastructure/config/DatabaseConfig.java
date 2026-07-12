@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
+import java.net.URI;
 
 @Configuration
 public class DatabaseConfig {
@@ -15,17 +16,34 @@ public class DatabaseConfig {
     private String databaseUrl;
 
     @Value("${DATABASE_USERNAME:torneo_user}")
-    private String username;
+    private String defaultUsername;
 
     @Value("${DATABASE_PASSWORD:torneo_pass}")
-    private String password;
+    private String defaultPassword;
 
     @Bean
     @Primary
-    public DataSource dataSource() {
-        String jdbcUrl = databaseUrl.startsWith("jdbc:")
-                ? databaseUrl
-                : "jdbc:" + databaseUrl;
+    public DataSource dataSource() throws Exception {
+        String rawUrl = databaseUrl;
+        if (rawUrl.startsWith("jdbc:")) {
+            rawUrl = rawUrl.substring(5);
+        }
+
+        URI uri = new URI(rawUrl);
+        String host = uri.getHost();
+        int port = uri.getPort() == -1 ? 5432 : uri.getPort();
+        String dbName = uri.getPath().replaceFirst("^/", "");
+
+        String username = defaultUsername;
+        String password = defaultPassword;
+
+        if (uri.getUserInfo() != null) {
+            String[] userInfo = uri.getUserInfo().split(":", 2);
+            username = userInfo[0];
+            password = userInfo.length > 1 ? userInfo[1] : defaultPassword;
+        }
+
+        String jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
 
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(jdbcUrl);
