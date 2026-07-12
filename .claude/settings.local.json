@@ -9,7 +9,12 @@
       "Bash(tasklist *)",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(sed -i 's/@GetMapping\\(\"\\\\/\"\\)\\\\s*$/@GetMapping\\({\"\", \"\\\\/\"}\\)/g' 'C:/Users/asus/Desktop/Prueba torneo/backend/src/main/java/com/torneo/galactico/presentation/controller/SpeciesController.java' 'C:/Users/asus/Desktop/Prueba torneo/backend/src/main/java/com/torneo/galactico/presentation/controller/CombatController.java')",
+      "Bash(sed -i 's/@PostMapping\\(\"\\\\/\"\\)\\\\s*$/@PostMapping\\({\"\", \"\\\\/\"}\\)/g' 'C:/Users/asus/Desktop/Prueba torneo/backend/src/main/java/com/torneo/galactico/presentation/controller/SpeciesController.java' 'C:/Users/asus/Desktop/Prueba torneo/backend/src/main/java/com/torneo/galactico/presentation/controller/CombatController.java')"
     ]
   }
 }

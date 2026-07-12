@@ -22,7 +22,7 @@ public class CombatController {
         this.combatService = combatService;
     }
 
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     @Operation(summary = "Start a combat between two species")
     public ResponseEntity<CombatResponse> fight(@Valid @RequestBody CombatRequest request) {
         Combat combat = combatService.fight(request.species1Id(), request.species2Id());
@@ -36,7 +36,7 @@ public class CombatController {
         return ResponseEntity.status(HttpStatus.CREATED).body(CombatResponse.from(combat));
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @Operation(summary = "List all combats")
     public ResponseEntity<List<CombatResponse>> findAll() {
         List<CombatResponse> responses = combatService.findAll()

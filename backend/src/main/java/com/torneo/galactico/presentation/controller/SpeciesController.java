@@ -22,7 +22,7 @@ public class SpeciesController {
         this.speciesService = speciesService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @Operation(summary = "List all species")
     public ResponseEntity<List<SpeciesResponse>> findAll() {
         List<SpeciesResponse> responses = speciesService.findAll()
@@ -32,7 +32,7 @@ public class SpeciesController {
         return ResponseEntity.ok(responses);
     }
 
-    @PostMapping("/")
+    @PostMapping({"", "/"})
     @Operation(summary = "Create a new species")
     public ResponseEntity<SpeciesResponse> create(@Valid @RequestBody SpeciesRequest request) {
         Species created = speciesService.create(

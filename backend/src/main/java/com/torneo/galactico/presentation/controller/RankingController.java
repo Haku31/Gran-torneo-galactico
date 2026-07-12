@@ -19,7 +19,7 @@ public class RankingController {
         this.speciesService = speciesService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"", "/"})
     @Operation(summary = "Get ranking of species ordered by victories descending")
     public ResponseEntity<List<SpeciesResponse>> getRanking() {
         List<SpeciesResponse> ranking = speciesService.findAllByVictoriesDesc()
