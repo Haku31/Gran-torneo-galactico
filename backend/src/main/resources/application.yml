@@ -1,8 +1,5 @@
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/torneo_galactico}
-    username: ${DATABASE_USERNAME:torneo_user}
-    password: ${DATABASE_PASSWORD:torneo_pass}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
