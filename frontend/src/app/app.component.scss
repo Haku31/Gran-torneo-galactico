@@ -1,0 +1,29 @@
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  span.spacer {
+    flex: 1 1 auto;
+  }
+
+  nav {
+    display: flex;
+    gap: 4px;
+  }
+
+  .active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  mat-icon {
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+}
+
+main {
+  min-height: calc(100vh - 64px);
+}

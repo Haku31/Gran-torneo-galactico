@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <mat-icon style="margin-right: 8px;">rocket_launch</mat-icon>
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+  <nav>
+    <a mat-button
+       routerLink="/ranking"
+       routerLinkActive="active-link"
+       [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon>emoji_events</mat-icon>
+      Ranking
+    </a>
+    <a mat-button
+       routerLink="/species"
+       routerLinkActive="active-link">
+      <mat-icon>alien</mat-icon>
+      Especies
+    </a>
+    <a mat-button
+       routerLink="/combats"
+       routerLinkActive="active-link">
+      <mat-icon>sports_mma</mat-icon>
+      Combates
+    </a>
+  </nav>
+</mat-toolbar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
