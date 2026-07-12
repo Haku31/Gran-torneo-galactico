@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Cinzel', serif;
 }
 
 // ============================================================
@@ -94,38 +94,21 @@
 // ============================================================
 // EMBLEMA
 // ============================================================
-.emblem {
-  font-size: 4rem;
-  animation: pulse 2s ease-in-out infinite;
-  margin-bottom: 1rem;
-  display: block;
-  line-height: 1;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 10px gold);
-  }
-  50% {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 25px gold);
-  }
-}
-
 // ============================================================
 // TITULO
 // ============================================================
 .title {
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.8rem, 4.5vw, 3.8rem);
   font-weight: 900;
   color: #ffffff;
   text-shadow:
-    0 0 30px rgba(150, 100, 255, 0.8),
-    0 0 60px rgba(150, 100, 255, 0.4);
-  letter-spacing: 0.1em;
+    0 0 20px rgba(180, 130, 255, 0.9),
+    0 0 50px rgba(150, 100, 255, 0.5),
+    0 0 80px rgba(100, 60, 200, 0.3);
+  letter-spacing: 0.08em;
   margin: 0 0 1rem;
-  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 // ============================================================
@@ -156,12 +139,14 @@
 // LEYENDA
 // ============================================================
 .legend {
-  font-size: clamp(1rem, 2vw, 1.3rem);
-  color: rgba(200, 200, 255, 0.9);
-  line-height: 1.8;
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  color: rgba(210, 205, 255, 0.92);
+  line-height: 2;
   max-width: 600px;
   margin: 1.5rem auto 2.5rem;
-  text-shadow: 0 0 10px rgba(100, 100, 255, 0.5);
+  text-shadow: 0 0 12px rgba(100, 100, 255, 0.5);
+  letter-spacing: 0.04em;
 }
 
 .highlight {
@@ -186,7 +171,7 @@
   cursor: pointer;
   overflow: hidden;
   transition: all 0.3s ease;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Cinzel', serif;
 
   &::before {
     content: '';
