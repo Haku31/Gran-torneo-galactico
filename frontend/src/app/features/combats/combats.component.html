@@ -1,3 +1,13 @@
+<!-- Combat Arena Overlay -->
+@if (showArena()) {
+  <app-combat-arena
+    [fighter1]="arenaFighter1()!"
+    [fighter2]="arenaFighter2()!"
+    [winner]="arenaWinner()"
+    (animationComplete)="onArenaComplete()">
+  </app-combat-arena>
+}
+
 <div class="combats-container">
   <h1 class="page-title">Arena de Combates</h1>
   <p class="page-subtitle">Donde las especies más poderosas se disputan la supremacía</p>
@@ -95,7 +105,13 @@
 
       <div class="combat-result">
         <div class="fighter-display">
-          <div class="fighter-orb">🌍</div>
+          @if (getSpeciesByName(lastCombat()!.species1Name); as sp1) {
+            <div class="fighter-avatar-small">
+              <img [src]="avatarService.getUrl(sp1)" [alt]="sp1.name" />
+            </div>
+          } @else {
+            <div class="fighter-orb">🌍</div>
+          }
           <div class="fighter-name-result">{{ lastCombat()!.species1Name }}</div>
         </div>
 
@@ -104,7 +120,13 @@
         </div>
 
         <div class="fighter-display">
-          <div class="fighter-orb">🌑</div>
+          @if (getSpeciesByName(lastCombat()!.species2Name); as sp2) {
+            <div class="fighter-avatar-small">
+              <img [src]="avatarService.getUrl(sp2)" [alt]="sp2.name" />
+            </div>
+          } @else {
+            <div class="fighter-orb">🌑</div>
+          }
           <div class="fighter-name-result">{{ lastCombat()!.species2Name }}</div>
         </div>
       </div>
@@ -143,18 +165,37 @@
 
         <ng-container matColumnDef="species1Name">
           <th mat-header-cell *matHeaderCellDef>Especie 1</th>
-          <td mat-cell *matCellDef="let combat" class="fighter-cell">{{ combat.species1Name }}</td>
+          <td mat-cell *matCellDef="let combat" class="fighter-cell">
+            <div class="cell-with-avatar">
+              @if (getSpeciesByName(combat.species1Name); as sp) {
+                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+              }
+              <span>{{ combat.species1Name }}</span>
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="species2Name">
           <th mat-header-cell *matHeaderCellDef>Especie 2</th>
-          <td mat-cell *matCellDef="let combat" class="fighter-cell">{{ combat.species2Name }}</td>
+          <td mat-cell *matCellDef="let combat" class="fighter-cell">
+            <div class="cell-with-avatar">
+              @if (getSpeciesByName(combat.species2Name); as sp) {
+                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+              }
+              <span>{{ combat.species2Name }}</span>
+            </div>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="winnerName">
           <th mat-header-cell *matHeaderCellDef>Ganador</th>
           <td mat-cell *matCellDef="let combat">
-            <span class="winner-chip">🏆 {{ combat.winnerName }}</span>
+            <div class="cell-with-avatar">
+              @if (getSpeciesByName(combat.winnerName); as sp) {
+                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+              }
+              <span class="winner-chip">🏆 {{ combat.winnerName }}</span>
+            </div>
           </td>
         </ng-container>
 

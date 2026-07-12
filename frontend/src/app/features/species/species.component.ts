@@ -13,6 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ApiService } from '../../core/services/api.service';
+import { AvatarService } from '../../core/services/avatar.service';
 import { Species, CreateSpeciesDto } from '../../core/models/models';
 
 @Component({
@@ -39,12 +40,13 @@ export class SpeciesComponent implements OnInit {
   private readonly api = inject(ApiService);
   private readonly fb = inject(FormBuilder);
   private readonly snackBar = inject(MatSnackBar);
+  avatarService = inject(AvatarService);
 
   species = signal<Species[]>([]);
   loading = signal(false);
   submitting = signal(false);
 
-  displayedColumns: string[] = ['name', 'powerLevel', 'specialAbility', 'victories'];
+  displayedColumns: string[] = ['avatar', 'name', 'powerLevel', 'specialAbility', 'victories'];
 
   speciesForm: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],

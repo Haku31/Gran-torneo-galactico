@@ -1,0 +1,63 @@
+<div class="arena-overlay" [class]="'phase-' + phase()">
+  <!-- Partículas de fondo -->
+  <div class="particles">
+    @for (p of [1,2,3,4,5,6,7,8,9,10,11,12]; track p) {
+      <div class="particle" [style.--i]="p"></div>
+    }
+  </div>
+
+  <!-- Fase: intro + tension -->
+  @if (phase() !== 'result') {
+    <div class="fighters">
+      <!-- Fighter 1 -->
+      <div class="fighter fighter-left" [class.clash]="phase() === 'clash'">
+        <div class="fighter-avatar">
+          <img [src]="avatar1" [alt]="fighter1.name" />
+        </div>
+        <div class="fighter-name">{{ fighter1.name }}</div>
+        <div class="fighter-power">⚡ {{ fighter1.powerLevel }}</div>
+      </div>
+
+      <!-- VS -->
+      <div class="vs-container" [class.hidden]="phase() === 'clash'">
+        <div class="vs-text">VS</div>
+        <div class="vs-ring"></div>
+      </div>
+
+      <!-- Fighter 2 -->
+      <div class="fighter fighter-right" [class.clash]="phase() === 'clash'">
+        <div class="fighter-avatar">
+          <img [src]="avatar2" [alt]="fighter2.name" />
+        </div>
+        <div class="fighter-name">{{ fighter2.name }}</div>
+        <div class="fighter-power">⚡ {{ fighter2.powerLevel }}</div>
+      </div>
+    </div>
+
+    <!-- Flash de choque -->
+    <div class="clash-flash" [class.active]="phase() === 'clash'"></div>
+  }
+
+  <!-- Fase: resultado -->
+  @if (phase() === 'result' && winner) {
+    <div class="result-container">
+      <div class="loser-side">
+        <img [src]="avatar.getUrl(loser)" [alt]="loser.name" class="loser-avatar" />
+        <div class="loser-name">{{ loser.name }}</div>
+      </div>
+      <div class="winner-display">
+        <div class="winner-crown">👑</div>
+        <div class="winner-avatar-wrapper">
+          <div class="winner-glow-ring"></div>
+          <img [src]="avatarWinner" [alt]="winner.name" class="winner-avatar" />
+        </div>
+        <div class="winner-label">¡VICTORIOSO!</div>
+        <div class="winner-name">{{ winner.name }}</div>
+        <div class="winner-power">⚡ {{ winner.powerLevel }}</div>
+      </div>
+      <div class="loser-side">
+        <img [src]="avatar.getUrl(fighter2.id === loser.id ? fighter2 : fighter1)" [alt]="" class="loser-avatar" style="opacity:0" />
+      </div>
+    </div>
+  }
+</div>
