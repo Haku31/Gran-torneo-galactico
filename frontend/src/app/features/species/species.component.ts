@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ApiService } from '../../core/services/api.service';
 import { Species, CreateSpeciesDto } from '../../core/models/models';
@@ -28,7 +29,8 @@ import { Species, CreateSpeciesDto } from '../../core/models/models';
     MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatDividerModule
+    MatDividerModule,
+    MatTooltipModule
   ],
   templateUrl: './species.component.html',
   styleUrl: './species.component.scss'

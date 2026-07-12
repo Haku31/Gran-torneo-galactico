@@ -1,143 +1,101 @@
-<div class="page-container">
-  <div class="ranking-header">
-    <h1 class="section-title">
-      🏆 Ranking Galáctico
-    </h1>
-    <button mat-raised-button
-            color="primary"
-            (click)="loadRanking()"
-            [disabled]="loading()">
+<div class="ranking-container">
+  <h1 class="page-title">Ranking Galáctico</h1>
+  <p class="page-subtitle">Las especies más poderosas del universo</p>
+
+  <div class="ranking-actions">
+    <button mat-raised-button color="primary" (click)="loadRanking()" [disabled]="loading()">
       <mat-icon>refresh</mat-icon>
-      Actualizar Ranking
+      Actualizar
     </button>
   </div>
 
   @if (loading()) {
     <div class="loading-container">
       <mat-spinner diameter="64"></mat-spinner>
-      <p style="margin-top: 16px; color: #9e9e9e;">Cargando ranking galáctico...</p>
+      <p class="loading-text">Consultando el cosmos...</p>
     </div>
-  } @else if (ranking().length === 0) {
-    <mat-card class="empty-card mat-elevation-z4">
-      <mat-card-content>
-        <div class="empty-state">
-          <div class="empty-trophy">🏆</div>
-          <h2>El ranking está vacío</h2>
-          <p>No hay especies registradas aún o ninguna ha participado en combates.</p>
-          <p>Ve a <strong>Especies</strong> para registrar nuevas especies y <strong>Combates</strong> para iniciar la competencia.</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
   } @else {
-    <!-- Top 3 Podium (if enough entries) -->
+
+    <!-- Podium top 3 -->
     @if (rankingWithPosition().length >= 3) {
-      <div class="podium-container">
-        <!-- 2nd place -->
-        <div class="podium-card podium-second mat-elevation-z2">
-          <div class="podium-medal">🥈</div>
+      <div class="podium">
+        <div class="podium-card silver">
+          <div class="podium-pos">2°</div>
           <div class="podium-name">{{ rankingWithPosition()[1].name }}</div>
           <div class="podium-victories">{{ rankingWithPosition()[1].victories }} victorias</div>
-          <div class="podium-power">
-            <mat-icon style="font-size: 14px; height: 14px; width: 14px;">bolt</mat-icon>
-            {{ rankingWithPosition()[1].powerLevel }}
-          </div>
-          <div class="podium-block podium-block-2"></div>
+          <div class="podium-power">⚡ {{ rankingWithPosition()[1].powerLevel }}</div>
         </div>
-
-        <!-- 1st place -->
-        <div class="podium-card podium-first mat-elevation-z4">
-          <div class="podium-medal champion-medal">🏆</div>
-          <div class="podium-name champion-name">{{ rankingWithPosition()[0].name }}</div>
+        <div class="podium-card gold">
+          <div class="podium-crown">👑</div>
+          <div class="podium-pos">1°</div>
+          <div class="podium-name">{{ rankingWithPosition()[0].name }}</div>
           <div class="podium-victories">{{ rankingWithPosition()[0].victories }} victorias</div>
-          <div class="podium-power">
-            <mat-icon style="font-size: 14px; height: 14px; width: 14px;">bolt</mat-icon>
-            {{ rankingWithPosition()[0].powerLevel }}
-          </div>
-          <div class="podium-block podium-block-1"></div>
+          <div class="podium-power">⚡ {{ rankingWithPosition()[0].powerLevel }}</div>
         </div>
-
-        <!-- 3rd place -->
-        <div class="podium-card podium-third mat-elevation-z2">
-          <div class="podium-medal">🥉</div>
+        <div class="podium-card bronze">
+          <div class="podium-pos">3°</div>
           <div class="podium-name">{{ rankingWithPosition()[2].name }}</div>
           <div class="podium-victories">{{ rankingWithPosition()[2].victories }} victorias</div>
-          <div class="podium-power">
-            <mat-icon style="font-size: 14px; height: 14px; width: 14px;">bolt</mat-icon>
-            {{ rankingWithPosition()[2].powerLevel }}
-          </div>
-          <div class="podium-block podium-block-3"></div>
+          <div class="podium-power">⚡ {{ rankingWithPosition()[2].powerLevel }}</div>
         </div>
       </div>
     }
 
-    <!-- Full Ranking Table -->
-    <mat-card class="mat-elevation-z4">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>leaderboard</mat-icon>
-          Tabla Completa de Posiciones
-        </mat-card-title>
-        <mat-card-subtitle>{{ ranking().length }} especie(s) clasificada(s)</mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <table mat-table [dataSource]="rankingWithPosition()" class="full-width">
-
-          <!-- Position Column -->
+    <!-- Tabla completa -->
+    <div class="ranking-table-container">
+      @if (ranking().length === 0) {
+        <div class="empty-state">
+          <div class="empty-trophy">🏆</div>
+          <p>Aún no hay especies registradas en el torneo</p>
+        </div>
+      } @else {
+        <table mat-table [dataSource]="rankingWithPosition()" class="cosmic-table">
           <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let item">
-              <span class="position-cell">
-                {{ getMedalIcon(item.position) }}
+              <span class="rank-badge"
+                    [class.rank-gold]="item.position === 1"
+                    [class.rank-silver]="item.position === 2"
+                    [class.rank-bronze]="item.position === 3">
+                {{ item.position === 1 ? '👑' : item.position === 2 ? '🥈' : item.position === 3 ? '🥉' : item.position }}
               </span>
             </td>
           </ng-container>
 
-          <!-- Name Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Especie</th>
             <td mat-cell *matCellDef="let item">
-              <span [class.champion-text]="item.position === 1">
-                <strong>{{ item.name }}</strong>
-              </span>
+              <span class="species-name" [class.champion-name]="item.position === 1">{{ item.name }}</span>
             </td>
           </ng-container>
 
-          <!-- Power Level Column -->
           <ng-container matColumnDef="powerLevel">
-            <th mat-header-cell *matHeaderCellDef>Nivel de Poder</th>
+            <th mat-header-cell *matHeaderCellDef>Poder</th>
             <td mat-cell *matCellDef="let item">
-              <span class="power-badge">
-                <mat-icon style="font-size: 14px; height: 14px; width: 14px; vertical-align: middle;">bolt</mat-icon>
-                {{ item.powerLevel | number }}
-              </span>
+              <span class="power-cell">⚡ {{ item.powerLevel | number }}</span>
             </td>
           </ng-container>
 
-          <!-- Special Ability Column -->
           <ng-container matColumnDef="specialAbility">
-            <th mat-header-cell *matHeaderCellDef>Habilidad Especial</th>
+            <th mat-header-cell *matHeaderCellDef>Habilidad</th>
             <td mat-cell *matCellDef="let item">{{ item.specialAbility }}</td>
           </ng-container>
 
-          <!-- Victories Column -->
           <ng-container matColumnDef="victories">
             <th mat-header-cell *matHeaderCellDef>Victorias</th>
             <td mat-cell *matCellDef="let item">
-              <span class="victories-badge" [class.champion-badge]="item.position === 1">
-                {{ item.victories }}
-              </span>
+              <span class="victories-cell" [class.champion-victories]="item.position === 1">{{ item.victories }}</span>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row
               *matRowDef="let row; columns: displayedColumns;"
-              [class]="getRowClass(row.position)"
-              class="ranking-row">
+              class="cosmic-row"
+              [class]="getRowClass(row.position)">
           </tr>
         </table>
-      </mat-card-content>
-    </mat-card>
+      }
+    </div>
   }
 </div>

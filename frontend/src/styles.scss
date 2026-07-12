@@ -1,140 +1,84 @@
-// Angular Material prebuilt theme is loaded in angular.json
-// Global styles
+@use '@angular/material' as mat;
+@include mat.core();
+
+// Tema oscuro custom para Angular Material
+$dark-primary: mat.m2-define-palette(mat.$m2-deep-purple-palette, 300, 100, 500);
+$dark-accent: mat.m2-define-palette(mat.$m2-amber-palette, A200);
+$dark-theme: mat.m2-define-dark-theme((
+  color: (primary: $dark-primary, accent: $dark-accent)
+));
+@include mat.all-component-themes($dark-theme);
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f5f5f5;
+  background: #000005;
+  color: rgba(210, 205, 255, 0.92);
+  font-family: 'Cinzel', serif;
 }
 
-.page-container {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+// Scrollbar épica
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #000005; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #9664ff, gold);
+  border-radius: 3px;
 }
 
-.section-title {
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #3f51b5;
-  margin-bottom: 24px;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.mat-elevation-z4 {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-// Table styles
+// Override Material table para tema oscuro
 .mat-mdc-table {
-  width: 100%;
-  border-radius: 8px;
-  overflow: hidden;
+  background: transparent !important;
 }
-
-.mat-mdc-header-row {
-  background-color: #3f51b5 !important;
+.mat-mdc-row, .mat-mdc-header-row {
+  background: transparent !important;
 }
-
+.mat-mdc-cell, .mat-mdc-header-cell {
+  color: rgba(210, 205, 255, 0.9) !important;
+  border-bottom-color: rgba(150, 100, 255, 0.2) !important;
+  font-family: 'Cinzel', serif !important;
+}
 .mat-mdc-header-cell {
-  color: white !important;
-  font-weight: 600 !important;
+  color: gold !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
 }
 
-// Card styles
-.result-card {
-  margin-top: 24px;
-  background: linear-gradient(135deg, #3f51b5 0%, #9c27b0 100%);
-  color: white;
-}
-
-.result-card .mat-mdc-card-title {
-  color: white;
-}
-
-.result-card .mat-mdc-card-subtitle {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-// Toolbar
-.app-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-// Ranking first position
-.rank-first {
-  background-color: #fff8e1 !important;
-  font-weight: bold;
-}
-
-// Loading spinner container
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 48px;
-}
-
-// Form container
-.form-card {
-  margin-bottom: 24px;
-}
-
-// Navigation links
-.nav-link {
-  color: white;
-  text-decoration: none;
-  margin: 0 8px;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+// Override Material form fields
+.mat-mdc-form-field {
+  .mdc-floating-label { color: rgba(180, 150, 255, 0.8) !important; font-family: 'Cinzel', serif !important; }
+  .mdc-text-field--outlined .mdc-notched-outline__leading,
+  .mdc-text-field--outlined .mdc-notched-outline__notch,
+  .mdc-text-field--outlined .mdc-notched-outline__trailing {
+    border-color: rgba(150, 100, 255, 0.4) !important;
   }
-
-  &.active {
-    background-color: rgba(255, 255, 255, 0.25);
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: gold !important;
   }
+  input, textarea { color: white !important; font-family: 'Cinzel', serif !important; }
 }
 
-// Winner highlight
-.winner-name {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+// Override select
+.mat-mdc-select-value-text { color: white !important; font-family: 'Cinzel', serif !important; }
+.mat-mdc-option { font-family: 'Cinzel', serif !important; background: #0d0d2b !important; color: rgba(210,205,255,0.9) !important; }
+.mat-mdc-option:hover { background: rgba(150,100,255,0.2) !important; }
+
+// Override buttons
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, #5a2d9e, #9664ff) !important;
+  font-family: 'Cinzel', serif !important;
+  letter-spacing: 0.08em !important;
+}
+.mat-mdc-raised-button.mat-accent {
+  background: linear-gradient(135deg, #b8860b, gold) !important;
+  color: #000 !important;
+  font-family: 'Cinzel', serif !important;
 }
 
-// Combat selectors layout
-.combat-selectors {
-  display: flex;
-  gap: 16px;
-  align-items: flex-end;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
-.combat-selectors mat-form-field {
-  flex: 1;
-  min-width: 200px;
-}
-
-// Action buttons row
-.action-buttons {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
+// Panel de select dropdown
+.cdk-overlay-pane .mat-mdc-select-panel {
+  background: #0d0d2b !important;
+  border: 1px solid rgba(150,100,255,0.3) !important;
 }

@@ -1,203 +1,171 @@
-<div class="page-container">
-  <h1 class="section-title">
-    <mat-icon style="vertical-align: middle; margin-right: 8px;">sports_mma</mat-icon>
-    Arena de Combate
-  </h1>
+<div class="combats-container">
+  <h1 class="page-title">Arena de Combates</h1>
+  <p class="page-subtitle">Donde las especies más poderosas se disputan la supremacía</p>
 
   <!-- Combat Setup Card -->
-  <mat-card class="form-card mat-elevation-z4">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>swords</mat-icon>
-        Iniciar Combate
-      </mat-card-title>
-      <mat-card-subtitle>Selecciona dos especies para enfrentarlas</mat-card-subtitle>
-    </mat-card-header>
+  <div class="cosmic-card battle-card">
+    <div class="card-header">
+      <span class="card-icon">⚔</span>
+      <h2 class="card-title">Iniciar Combate</h2>
+    </div>
+    <p class="card-subtitle">Selecciona dos especies y que comience la batalla</p>
 
-    <mat-card-content>
-      <form [formGroup]="combatForm" (ngSubmit)="onStartCombat()">
-        <div class="combat-selectors">
-          <mat-form-field appearance="outline">
+    <form [formGroup]="combatForm" (ngSubmit)="onStartCombat()">
+      <div class="combat-selectors">
+        <div class="fighter-slot">
+          <div class="fighter-label">Combatiente I</div>
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Especie 1</mat-label>
             <mat-select formControlName="species1Id">
               @for (s of species(); track s.id) {
                 <mat-option [value]="s.id">
-                  {{ s.name }} (Poder: {{ s.powerLevel }})
+                  {{ s.name }} (⚡ {{ s.powerLevel }})
                 </mat-option>
               }
             </mat-select>
-            <mat-icon matSuffix>filter_1</mat-icon>
+            <mat-icon matSuffix style="color: rgba(150,100,255,0.6);">filter_1</mat-icon>
             @if (combatForm.get('species1Id')?.hasError('required') && combatForm.get('species1Id')?.touched) {
               <mat-error>Selecciona la primera especie</mat-error>
             }
           </mat-form-field>
+        </div>
 
-          <div class="vs-indicator">
-            <mat-icon>close</mat-icon>
-            <span>VS</span>
-            <mat-icon>close</mat-icon>
-          </div>
+        <div class="vs-indicator">
+          <div class="vs-text">VS</div>
+        </div>
 
-          <mat-form-field appearance="outline">
+        <div class="fighter-slot">
+          <div class="fighter-label">Combatiente II</div>
+          <mat-form-field appearance="outline" class="full-width">
             <mat-label>Especie 2</mat-label>
             <mat-select formControlName="species2Id">
               @for (s of species(); track s.id) {
                 <mat-option [value]="s.id">
-                  {{ s.name }} (Poder: {{ s.powerLevel }})
+                  {{ s.name }} (⚡ {{ s.powerLevel }})
                 </mat-option>
               }
             </mat-select>
-            <mat-icon matSuffix>filter_2</mat-icon>
+            <mat-icon matSuffix style="color: rgba(150,100,255,0.6);">filter_2</mat-icon>
             @if (combatForm.get('species2Id')?.hasError('required') && combatForm.get('species2Id')?.touched) {
               <mat-error>Selecciona la segunda especie</mat-error>
             }
           </mat-form-field>
         </div>
+      </div>
 
-        <div class="action-buttons">
-          <button mat-raised-button
-                  color="primary"
-                  type="submit"
-                  [disabled]="combating() || randomCombating()">
-            @if (combating()) {
-              <ng-container>
-                <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
-                Combatiendo...
-              </ng-container>
-            } @else {
-              <ng-container>
-                <mat-icon>play_arrow</mat-icon>
-                Iniciar Combate
-              </ng-container>
-            }
-          </button>
+      <div class="action-buttons">
+        <button class="btn-combat" type="submit" [disabled]="combating() || randomCombating()">
+          @if (combating()) {
+            <mat-spinner diameter="20"></mat-spinner>
+            <span>Combatiendo...</span>
+          } @else {
+            <span>⚔</span>
+            <span>Iniciar Combate</span>
+          }
+        </button>
 
-          <button mat-raised-button
-                  color="accent"
-                  type="button"
-                  (click)="onRandomCombat()"
-                  [disabled]="combating() || randomCombating()">
-            @if (randomCombating()) {
-              <ng-container>
-                <mat-spinner diameter="20" style="display: inline-block; margin-right: 8px;"></mat-spinner>
-                Ejecutando...
-              </ng-container>
-            } @else {
-              <ng-container>
-                <mat-icon>casino</mat-icon>
-                Combate Aleatorio
-              </ng-container>
-            }
-          </button>
+        <button class="btn-random" type="button" (click)="onRandomCombat()" [disabled]="combating() || randomCombating()">
+          @if (randomCombating()) {
+            <mat-spinner diameter="20"></mat-spinner>
+            <span>Ejecutando...</span>
+          } @else {
+            <span>🎲</span>
+            <span>Combate Aleatorio</span>
+          }
+        </button>
 
-          <button mat-stroked-button
-                  type="button"
-                  (click)="loadData()"
-                  [disabled]="loading()">
-            <mat-icon>refresh</mat-icon>
-            Recargar
-          </button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+        <button class="btn-ghost" type="button" (click)="loadData()" [disabled]="loading()">
+          <mat-icon>refresh</mat-icon>
+          Recargar
+        </button>
+      </div>
+    </form>
+  </div>
 
   <!-- Last Combat Result Card -->
   @if (lastCombat()) {
-    <mat-card class="result-card mat-elevation-z4">
-      <mat-card-header>
-        <mat-icon mat-card-avatar style="color: #ffd700; font-size: 40px;">emoji_events</mat-icon>
-        <mat-card-title style="color: white;">Último Resultado</mat-card-title>
-        <mat-card-subtitle style="color: rgba(255,255,255,0.8);">
-          {{ formatDate(lastCombat()!.fightDate) }}
-        </mat-card-subtitle>
-      </mat-card-header>
+    <div class="cosmic-card result-card">
+      <div class="result-header">
+        <span class="result-trophy">🏆</span>
+        <div>
+          <h2 class="result-title">Último Resultado</h2>
+          <p class="result-date">{{ formatDate(lastCombat()!.fightDate) }}</p>
+        </div>
+      </div>
 
-      <mat-card-content>
-        <div class="combat-result">
-          <div class="fighter">
-            <mat-icon class="fighter-icon">public</mat-icon>
-            <span class="fighter-name">{{ lastCombat()!.species1Name }}</span>
-          </div>
-
-          <div class="vs-text">VS</div>
-
-          <div class="fighter">
-            <mat-icon class="fighter-icon">public</mat-icon>
-            <span class="fighter-name">{{ lastCombat()!.species2Name }}</span>
-          </div>
+      <div class="combat-result">
+        <div class="fighter-display">
+          <div class="fighter-orb">🌍</div>
+          <div class="fighter-name-result">{{ lastCombat()!.species1Name }}</div>
         </div>
 
-        <mat-divider style="background-color: rgba(255,255,255,0.3); margin: 16px 0;"></mat-divider>
-
-        <div class="winner-section">
-          <mat-icon style="color: #ffd700; font-size: 32px; margin-right: 8px;">military_tech</mat-icon>
-          <div>
-            <div style="color: rgba(255,255,255,0.7); font-size: 0.875rem;">GANADOR</div>
-            <div class="winner-name">{{ lastCombat()!.winnerName }}</div>
-          </div>
+        <div class="result-vs">
+          <span>VS</span>
         </div>
-      </mat-card-content>
-    </mat-card>
+
+        <div class="fighter-display">
+          <div class="fighter-orb">🌑</div>
+          <div class="fighter-name-result">{{ lastCombat()!.species2Name }}</div>
+        </div>
+      </div>
+
+      <div class="winner-divider"></div>
+
+      <div class="winner-section">
+        <div class="winner-label">GANADOR DEL COMBATE</div>
+        <div class="winner-name">{{ lastCombat()!.winnerName }}</div>
+        <div class="winner-glow-ring"></div>
+      </div>
+    </div>
   }
 
   <!-- Combats History Table -->
-  <mat-card class="mat-elevation-z4">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>history</mat-icon>
-        Historial de Combates
-      </mat-card-title>
-      <mat-card-subtitle>{{ combats().length }} combate(s) registrado(s)</mat-card-subtitle>
-    </mat-card-header>
+  <div class="cosmic-card history-card">
+    <div class="card-header">
+      <span class="card-icon">⏳</span>
+      <h2 class="card-title">Historial de Combates</h2>
+      <span class="history-count">{{ combats().length }} combate(s)</span>
+    </div>
 
-    <mat-card-content>
-      @if (loading()) {
-        <div class="loading-container">
-          <mat-spinner diameter="48"></mat-spinner>
-        </div>
-      } @else if (combats().length === 0) {
-        <div class="empty-state">
-          <mat-icon class="empty-icon">sports_mma</mat-icon>
-          <p>No hay combates registrados aún.</p>
-          <p>¡Inicia el primer combate galáctico!</p>
-        </div>
-      } @else {
-        <table mat-table [dataSource]="combats().slice().reverse()" class="full-width">
+    @if (loading()) {
+      <div class="loading-container">
+        <mat-spinner diameter="48"></mat-spinner>
+        <p class="loading-text">Consultando archivos del torneo...</p>
+      </div>
+    } @else if (combats().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">⚔</div>
+        <p>No hay combates registrados aún.</p>
+        <p class="empty-sub">¡Inicia el primer combate galáctico!</p>
+      </div>
+    } @else {
+      <table mat-table [dataSource]="combats().slice().reverse()" class="cosmic-table">
 
-          <!-- Species 1 Column -->
-          <ng-container matColumnDef="species1Name">
-            <th mat-header-cell *matHeaderCellDef>Especie 1</th>
-            <td mat-cell *matCellDef="let combat">{{ combat.species1Name }}</td>
-          </ng-container>
+        <ng-container matColumnDef="species1Name">
+          <th mat-header-cell *matHeaderCellDef>Especie 1</th>
+          <td mat-cell *matCellDef="let combat" class="fighter-cell">{{ combat.species1Name }}</td>
+        </ng-container>
 
-          <!-- Species 2 Column -->
-          <ng-container matColumnDef="species2Name">
-            <th mat-header-cell *matHeaderCellDef>Especie 2</th>
-            <td mat-cell *matCellDef="let combat">{{ combat.species2Name }}</td>
-          </ng-container>
+        <ng-container matColumnDef="species2Name">
+          <th mat-header-cell *matHeaderCellDef>Especie 2</th>
+          <td mat-cell *matCellDef="let combat" class="fighter-cell">{{ combat.species2Name }}</td>
+        </ng-container>
 
-          <!-- Winner Column -->
-          <ng-container matColumnDef="winnerName">
-            <th mat-header-cell *matHeaderCellDef>Ganador</th>
-            <td mat-cell *matCellDef="let combat">
-              <span class="winner-chip">
-                <mat-icon style="font-size: 16px; height: 16px; width: 16px;">emoji_events</mat-icon>
-                {{ combat.winnerName }}
-              </span>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="winnerName">
+          <th mat-header-cell *matHeaderCellDef>Ganador</th>
+          <td mat-cell *matCellDef="let combat">
+            <span class="winner-chip">🏆 {{ combat.winnerName }}</span>
+          </td>
+        </ng-container>
 
-          <!-- Date Column -->
-          <ng-container matColumnDef="fightDate">
-            <th mat-header-cell *matHeaderCellDef>Fecha</th>
-            <td mat-cell *matCellDef="let combat">{{ formatDate(combat.fightDate) }}</td>
-          </ng-container>
+        <ng-container matColumnDef="fightDate">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let combat" class="date-cell">{{ formatDate(combat.fightDate) }}</td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
-        </table>
-      }
-    </mat-card-content>
-  </mat-card>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cosmic-row"></tr>
+      </table>
+    }
+  </div>
 </div>
