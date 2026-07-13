@@ -1,20 +1,14 @@
-// ============================================================
-// UNIVERSE - Base container
-// ============================================================
 .universe {
   position: fixed;
   inset: 0;
-  background: radial-gradient(ellipse at center, #0a0a2e 0%, #000005 60%, #000000 100%);
+  background: radial-gradient(ellipse at center, #0a0a2e 0%, var(--color-bg) 60%, #000000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
 }
 
-// ============================================================
-// CANVAS DE ESTRELLAS
-// ============================================================
 .stars-canvas {
   position: absolute;
   inset: 0;
@@ -22,9 +16,6 @@
   height: 100%;
 }
 
-// ============================================================
-// NEBULAS DECORATIVAS
-// ============================================================
 .nebula {
   position: absolute;
   border-radius: 50%;
@@ -66,9 +57,6 @@
   100% { transform: translate(-20px, 30px) scale(0.98); opacity: 0.7; }
 }
 
-// ============================================================
-// CONTENIDO CENTRAL
-// ============================================================
 .content {
   position: relative;
   z-index: 10;
@@ -91,14 +79,8 @@
   to   { opacity: 0; transform: scale(0.8); }
 }
 
-// ============================================================
-// EMBLEMA
-// ============================================================
-// ============================================================
-// TITULO
-// ============================================================
 .title {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: clamp(1.8rem, 4.5vw, 3.8rem);
   font-weight: 900;
   color: #ffffff;
@@ -111,9 +93,6 @@
   line-height: 1.3;
 }
 
-// ============================================================
-// DIVISOR
-// ============================================================
 .divider {
   width: 200px;
   height: 2px;
@@ -121,7 +100,7 @@
     to right,
     transparent,
     #9664ff,
-    gold,
+    var(--color-accent-gold),
     #9664ff,
     transparent
   );
@@ -135,13 +114,10 @@
   100% { opacity: 0.5; }
 }
 
-// ============================================================
-// LEYENDA
-// ============================================================
 .legend {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: clamp(0.9rem, 1.8vw, 1.15rem);
-  color: rgba(210, 205, 255, 0.92);
+  color: var(--color-text-primary);
   line-height: 2;
   max-width: 600px;
   margin: 1.5rem auto 2.5rem;
@@ -150,19 +126,16 @@
 }
 
 .highlight {
-  color: gold;
+  color: var(--color-accent-gold);
   font-weight: bold;
-  text-shadow: 0 0 15px gold;
+  text-shadow: var(--glow-gold);
 }
 
-// ============================================================
-// BOTON EPICO
-// ============================================================
 .start-btn {
   position: relative;
   background: transparent;
-  border: 2px solid gold;
-  color: gold;
+  border: 2px solid var(--color-accent-gold);
+  color: var(--color-accent-gold);
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -171,7 +144,7 @@
   cursor: pointer;
   overflow: hidden;
   transition: all 0.3s ease;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
 
   &::before {
     content: '';
@@ -189,9 +162,7 @@
 
   &:hover {
     background: rgba(255, 215, 0, 0.1);
-    box-shadow:
-      0 0 30px rgba(255, 215, 0, 0.5),
-      0 0 60px rgba(255, 215, 0, 0.2);
+    box-shadow: var(--glow-gold), 0 0 60px rgba(255, 215, 0, 0.2);
     transform: scale(1.05);
 
     &::before {
@@ -221,9 +192,6 @@
   }
 }
 
-// ============================================================
-// EFECTO WARP / HIPERESPACIO
-// ============================================================
 .universe.warp {
   .stars-canvas {
     animation: warpSpeed 2s ease-in forwards;

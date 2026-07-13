@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -41,10 +41,7 @@ import { CombatArenaComponent } from './combat-arena/combat-arena.component';
   styleUrl: './combats.component.scss'
 })
 export class CombatsComponent implements OnInit {
-  private readonly api = inject(ApiService);
-  private readonly fb = inject(FormBuilder);
-  private readonly snackBar = inject(MatSnackBar);
-  avatarService = inject(AvatarService);
+  readonly displayedColumns: string[] = ['species1Name', 'species2Name', 'winnerName', 'fightDate'];
 
   species = signal<Species[]>([]);
   combats = signal<Combat[]>([]);
@@ -53,21 +50,26 @@ export class CombatsComponent implements OnInit {
   combating = signal(false);
   randomCombating = signal(false);
 
-  // Arena signals
   showArena = signal(false);
   arenaFighter1 = signal<Species | null>(null);
   arenaFighter2 = signal<Species | null>(null);
   arenaWinner = signal<Species | null>(null);
 
-  // Pending combat result to apply after animation
   private pendingCombat = signal<Combat | null>(null);
 
-  displayedColumns: string[] = ['species1Name', 'species2Name', 'winnerName', 'fightDate'];
+  combatForm: FormGroup;
 
-  combatForm: FormGroup = this.fb.group({
-    species1Id: [null, Validators.required],
-    species2Id: [null, Validators.required]
-  });
+  constructor(
+    private readonly api: ApiService,
+    private readonly fb: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    readonly avatarService: AvatarService
+  ) {
+    this.combatForm = this.fb.group({
+      species1Id: [null, Validators.required],
+      species2Id: [null, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
@@ -106,7 +108,7 @@ export class CombatsComponent implements OnInit {
       return;
     }
 
-    const { species1Id, species2Id } = this.combatForm.value;
+    const { species1Id, species2Id } = this.combatForm.value as { species1Id: number; species2Id: number };
 
     if (species1Id === species2Id) {
       this.snackBar.open('¡Debes seleccionar dos especies diferentes!', 'Cerrar', { duration: 3000 });
@@ -121,16 +123,8 @@ export class CombatsComponent implements OnInit {
       return;
     }
 
-    // Show arena immediately
-    this.arenaFighter1.set(fighter1);
-    this.arenaFighter2.set(fighter2);
-    this.arenaWinner.set(null);
-    this.pendingCombat.set(null);
-    this.showArena.set(true);
     this.combating.set(true);
-
-    // Call API after clash phase (~1800ms)
-    setTimeout(() => {
+    this.launchArena(fighter1, fighter2, () =>
       this.api.startCombat({ species1Id: Number(species1Id), species2Id: Number(species2Id) }).subscribe({
         next: (combat) => {
           const winner = this.species().find(s => s.name === combat.winnerName) ?? null;
@@ -140,12 +134,11 @@ export class CombatsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al iniciar combate:', err);
-          this.showArena.set(false);
+          this.closeArenaOnError('Error al iniciar el combate. Intente nuevamente.');
           this.combating.set(false);
-          this.snackBar.open('Error al iniciar el combate. Intente nuevamente.', 'Cerrar', { duration: 5000 });
         }
-      });
-    }, 1800);
+      })
+    );
   }
 
   onRandomCombat(): void {
@@ -155,24 +148,16 @@ export class CombatsComponent implements OnInit {
       return;
     }
 
-    // Pick two random distinct species from the loaded list for arena display
     const shuffled = [...speciesList].sort(() => Math.random() - 0.5);
     const fighter1 = shuffled[0];
     const fighter2 = shuffled[1];
 
-    this.arenaFighter1.set(fighter1);
-    this.arenaFighter2.set(fighter2);
-    this.arenaWinner.set(null);
-    this.pendingCombat.set(null);
-    this.showArena.set(true);
     this.randomCombating.set(true);
-
-    // Call API after clash phase (~1800ms)
-    setTimeout(() => {
+    this.launchArena(fighter1, fighter2, () =>
       this.api.randomCombat().subscribe({
         next: (combat) => {
           const winner = this.species().find(s => s.name === combat.winnerName) ?? null;
-          // Update arena fighters to match actual combatants from API
+          // The API may pick different fighters than our local shuffle, so sync the display
           const actualFighter1 = this.species().find(s => s.name === combat.species1Name) ?? fighter1;
           const actualFighter2 = this.species().find(s => s.name === combat.species2Name) ?? fighter2;
           this.arenaFighter1.set(actualFighter1);
@@ -182,12 +167,11 @@ export class CombatsComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error en combate aleatorio:', err);
-          this.showArena.set(false);
+          this.closeArenaOnError('Error al ejecutar combate aleatorio. Asegúrese de tener al menos 2 especies registradas.');
           this.randomCombating.set(false);
-          this.snackBar.open('Error al ejecutar combate aleatorio. Asegúrese de tener al menos 2 especies registradas.', 'Cerrar', { duration: 5000 });
         }
-      });
-    }, 1800);
+      })
+    );
   }
 
   onArenaComplete(): void {
@@ -223,5 +207,21 @@ export class CombatsComponent implements OnInit {
     } catch {
       return dateStr;
     }
+  }
+
+  private launchArena(fighter1: Species, fighter2: Species, callApi: () => void): void {
+    this.arenaFighter1.set(fighter1);
+    this.arenaFighter2.set(fighter2);
+    this.arenaWinner.set(null);
+    this.pendingCombat.set(null);
+    this.showArena.set(true);
+
+    // Delay matches the arena intro+tension animation so the API result arrives right at the clash
+    setTimeout(callApi, 1800);
+  }
+
+  private closeArenaOnError(message: string): void {
+    this.showArena.set(false);
+    this.snackBar.open(message, 'Cerrar', { duration: 5000 });
   }
 }

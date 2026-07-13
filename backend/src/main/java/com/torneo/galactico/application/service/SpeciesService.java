@@ -41,30 +41,8 @@ public class SpeciesService {
         return speciesRepository.findAllByOrderByVictoriesDesc();
     }
 
-    /**
-     * Determines the winner between two species.
-     * - Higher powerLevel wins.
-     * - On tie, alphabetically first name wins (case-insensitive).
-     */
-    public Species determineWinner(Species s1, Species s2) {
-        if (s1.getPowerLevel() > s2.getPowerLevel()) {
-            return s1;
-        } else if (s2.getPowerLevel() > s1.getPowerLevel()) {
-            return s2;
-        } else {
-            // Tie: alphabetically first name wins (case-insensitive)
-            int cmp = s1.getName().compareToIgnoreCase(s2.getName());
-            return cmp <= 0 ? s1 : s2;
-        }
-    }
-
     public void incrementVictories(Species winner) {
         winner.incrementVictories();
         speciesRepository.save(winner);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Species> findAllSpecies() {
-        return speciesRepository.findAll();
     }
 }

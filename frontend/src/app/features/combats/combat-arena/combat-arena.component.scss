@@ -9,28 +9,28 @@
   overflow: hidden;
 }
 
-// Partículas flotantes
 .particles {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
+
 .particle {
   position: absolute;
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: gold;
+  background: var(--color-accent-gold);
   left: calc(var(--i) * 8%);
   animation: floatParticle calc(2s + var(--i) * 0.3s) ease-in-out infinite alternate;
   opacity: 0.6;
 }
+
 @keyframes floatParticle {
   from { transform: translateY(100vh) scale(0); opacity: 0; }
-  to { transform: translateY(-10vh) scale(1); opacity: 0.8; }
+  to   { transform: translateY(-10vh) scale(1); opacity: 0.8; }
 }
 
-// Luchadores
 .fighters {
   display: flex;
   align-items: center;
@@ -58,29 +58,33 @@
 
 @keyframes enterFromLeft {
   from { transform: translateX(-150px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-@keyframes enterFromRight {
-  from { transform: translateX(150px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-@keyframes clashLeft {
-  from { transform: translateX(0); }
-  to { transform: translateX(120px) scale(1.2); }
-}
-@keyframes clashRight {
-  from { transform: translateX(0); }
-  to { transform: translateX(-120px) scale(1.2); }
+  to   { transform: translateX(0); opacity: 1; }
 }
 
-// Fase tensión: vibración
+@keyframes enterFromRight {
+  from { transform: translateX(150px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes clashLeft {
+  from { transform: translateX(0); }
+  to   { transform: translateX(120px) scale(1.2); }
+}
+
+@keyframes clashRight {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-120px) scale(1.2); }
+}
+
+// !important needed — the phase class on the parent overrides any component animation
 .phase-tension .fighter {
   animation: shake 0.15s ease-in-out infinite !important;
 }
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-4px) rotate(-1deg); }
-  75% { transform: translateX(4px) rotate(1deg); }
+  25%  { transform: translateX(-4px) rotate(-1deg); }
+  75%  { transform: translateX(4px) rotate(1deg); }
 }
 
 .fighter-avatar {
@@ -96,27 +100,26 @@
 }
 
 .phase-tension .fighter-avatar {
-  border-color: gold;
+  border-color: var(--color-accent-gold);
   box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.1);
 }
 
 .fighter-name {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1.1rem;
   font-weight: 700;
   color: white;
-  text-shadow: 0 0 15px rgba(150, 100, 255, 0.8);
+  text-shadow: var(--glow-violet);
   text-align: center;
 }
 
 .fighter-power {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.9rem;
-  color: gold;
-  text-shadow: 0 0 10px gold;
+  color: var(--color-accent-gold);
+  text-shadow: var(--glow-gold);
 }
 
-// VS
 .vs-container {
   position: relative;
   display: flex;
@@ -128,18 +131,18 @@
 }
 
 .vs-text {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 3rem;
   font-weight: 900;
   color: white;
-  text-shadow: 0 0 30px rgba(150,100,255,1), 0 0 60px rgba(150,100,255,0.5);
+  text-shadow: 0 0 30px rgba(150, 100, 255, 1), 0 0 60px rgba(150, 100, 255, 0.5);
   z-index: 1;
   animation: vsPulse 0.8s ease-in-out infinite alternate;
 }
 
 @keyframes vsPulse {
-  from { transform: scale(1); text-shadow: 0 0 20px rgba(150,100,255,0.8); }
-  to { transform: scale(1.15); text-shadow: 0 0 50px rgba(255,215,0,1), 0 0 80px rgba(150,100,255,0.8); }
+  from { transform: scale(1); text-shadow: 0 0 20px rgba(150, 100, 255, 0.8); }
+  to   { transform: scale(1.15); text-shadow: 0 0 50px rgba(255, 215, 0, 1), 0 0 80px rgba(150, 100, 255, 0.8); }
 }
 
 .vs-ring {
@@ -147,20 +150,19 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 2px solid rgba(150,100,255,0.4);
+  border: 2px solid rgba(150, 100, 255, 0.4);
   animation: ringPulse 1s ease-in-out infinite;
 }
 
 @keyframes ringPulse {
   0%, 100% { transform: scale(1); opacity: 0.4; }
-  50% { transform: scale(1.3); opacity: 0; }
+  50%       { transform: scale(1.3); opacity: 0; }
 }
 
-// Flash de choque
 .clash-flash {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, white 0%, rgba(255,215,0,0.8) 20%, transparent 70%);
+  background: radial-gradient(circle at center, white 0%, rgba(255, 215, 0, 0.8) 20%, transparent 70%);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.1s;
@@ -169,12 +171,11 @@
 }
 
 @keyframes flashBurst {
-  0% { opacity: 0; transform: scale(0.5); }
-  30% { opacity: 1; transform: scale(1.5); }
+  0%   { opacity: 0; transform: scale(0.5); }
+  30%  { opacity: 1; transform: scale(1.5); }
   100% { opacity: 0; transform: scale(3); }
 }
 
-// Resultado
 .result-container {
   display: flex;
   align-items: center;
@@ -187,7 +188,7 @@
 
 @keyframes resultReveal {
   from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 .loser-side {
@@ -203,15 +204,15 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  border: 2px solid rgba(100,100,100,0.4);
+  border: 2px solid rgba(100, 100, 100, 0.4);
   padding: 6px;
-  background: rgba(10,10,20,0.6);
+  background: rgba(10, 10, 20, 0.6);
 }
 
 .loser-name {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.85rem;
-  color: rgba(150,150,150,0.6);
+  color: rgba(150, 150, 150, 0.6);
 }
 
 .winner-display {
@@ -224,12 +225,12 @@
 .winner-crown {
   font-size: 2.5rem;
   animation: crownFloat 1s ease-in-out infinite alternate;
-  filter: drop-shadow(0 0 15px gold);
+  filter: drop-shadow(0 0 15px var(--color-accent-gold));
 }
 
 @keyframes crownFloat {
   from { transform: translateY(0) rotate(-5deg); }
-  to { transform: translateY(-10px) rotate(5deg); }
+  to   { transform: translateY(-10px) rotate(5deg); }
 }
 
 .winner-avatar-wrapper {
@@ -244,53 +245,53 @@
   width: 190px;
   height: 190px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
   animation: glowRingPulse 1.5s ease-in-out infinite;
 }
 
 @keyframes glowRingPulse {
   0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.2); opacity: 0.3; }
+  50%       { transform: scale(1.2); opacity: 0.3; }
 }
 
 .winner-avatar {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  border: 3px solid gold;
+  border: 3px solid var(--color-accent-gold);
   padding: 8px;
   background: rgba(30, 15, 5, 0.9);
-  box-shadow: 0 0 40px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.3);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.6), 0 0 80px rgba(255, 215, 0, 0.3);
   animation: winnerBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 @keyframes winnerBounce {
   from { transform: scale(0); }
-  to { transform: scale(1); }
+  to   { transform: scale(1); }
 }
 
 .winner-label {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 0.75rem;
   font-weight: 700;
-  color: gold;
+  color: var(--color-accent-gold);
   letter-spacing: 0.3em;
-  text-shadow: 0 0 20px gold;
+  text-shadow: var(--glow-gold);
   text-transform: uppercase;
 }
 
 .winner-name {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1.6rem;
   font-weight: 900;
-  color: gold;
-  text-shadow: 0 0 30px gold, 0 0 60px rgba(255,215,0,0.5);
+  color: var(--color-accent-gold);
+  text-shadow: var(--glow-gold), 0 0 60px rgba(255, 215, 0, 0.5);
   text-align: center;
 }
 
 .winner-power {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 1rem;
-  color: rgba(255,220,100,0.9);
-  text-shadow: 0 0 10px gold;
+  color: rgba(255, 220, 100, 0.9);
+  text-shadow: var(--glow-gold);
 }

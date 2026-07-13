@@ -1,7 +1,6 @@
 import {
   Component,
   signal,
-  inject,
   AfterViewInit,
   ViewChild,
   ElementRef,
@@ -30,7 +29,6 @@ interface Star {
   styleUrl: './landing.component.scss'
 })
 export class LandingComponent implements AfterViewInit, OnDestroy {
-  private router = inject(Router);
   showWarp = signal(false);
 
   @ViewChild('starsCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -42,6 +40,8 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private readonly REPEL_RADIUS = 120;
   private readonly CONNECT_RADIUS = 140;
   private readonly REPEL_FORCE = 6;
+
+  constructor(private readonly router: Router) {}
 
   ngAfterViewInit() {
     const canvas = this.canvasRef.nativeElement;
@@ -90,7 +90,6 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
       const mx = this.mouse.x;
       const my = this.mouse.y;
 
-      // Update star positions with repulsion + return-to-origin spring
       stars.forEach(star => {
         const dx = star.x - mx;
         const dy = star.y - my;
@@ -102,23 +101,19 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
           star.vy += (dy / dist) * force * this.REPEL_FORCE;
         }
 
-        // Spring back to origin
+        // Spring + damping so stars drift back without snapping
         star.vx += (star.originX - star.x) * 0.04;
         star.vy += (star.originY - star.y) * 0.04;
-
-        // Damping
         star.vx *= 0.85;
         star.vy *= 0.85;
 
         star.x += star.vx;
         star.y += star.vy;
 
-        // Twinkle
         star.opacity += star.twinkle;
         if (star.opacity > 1 || star.opacity < 0.1) star.twinkle *= -1;
       });
 
-      // Draw constellation lines between nearby stars near cursor
       for (let i = 0; i < stars.length; i++) {
         const s1 = stars[i];
         const toCursorX = s1.x - mx;
@@ -150,14 +145,12 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
         }
       }
 
-      // Draw stars
       stars.forEach(star => {
         const dx = star.x - mx;
         const dy = star.y - my;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const nearCursor = dist < this.CONNECT_RADIUS * 2;
 
-        // Glow for stars near cursor
         if (nearCursor) {
           const glowAlpha = (1 - dist / (this.CONNECT_RADIUS * 2)) * 0.6;
           ctx.beginPath();
@@ -174,7 +167,6 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
         ctx.fill();
       });
 
-      // Cursor aura
       if (mx > 0 && my > 0) {
         const aura = ctx.createRadialGradient(mx, my, 0, mx, my, 80);
         aura.addColorStop(0, 'rgba(150, 100, 255, 0.12)');

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Species } from '../../../core/models/models';
 import { AvatarService } from '../../../core/services/avatar.service';
@@ -16,14 +16,14 @@ export class CombatArenaComponent implements OnInit {
   @Input() winner: Species | null = null;
   @Output() animationComplete = new EventEmitter<void>();
 
-  avatar = inject(AvatarService);
-
   phase = signal<'intro' | 'tension' | 'clash' | 'result'>('intro');
 
-  get avatar1() { return this.avatar.getUrl(this.fighter1); }
-  get avatar2() { return this.avatar.getUrl(this.fighter2); }
-  get avatarWinner() { return this.winner ? this.avatar.getUrl(this.winner) : ''; }
-  get loser() { return this.winner?.id === this.fighter1.id ? this.fighter2 : this.fighter1; }
+  constructor(readonly avatar: AvatarService) {}
+
+  get avatar1(): string { return this.avatar.getUrl(this.fighter1); }
+  get avatar2(): string { return this.avatar.getUrl(this.fighter2); }
+  get avatarWinner(): string { return this.winner ? this.avatar.getUrl(this.winner) : ''; }
+  get loser(): Species { return this.winner?.id === this.fighter1.id ? this.fighter2 : this.fighter1; }
 
   ngOnInit() {
     setTimeout(() => this.phase.set('tension'), 800);

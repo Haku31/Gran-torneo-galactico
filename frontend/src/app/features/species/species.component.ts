@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -37,22 +37,26 @@ import { Species, CreateSpeciesDto } from '../../core/models/models';
   styleUrl: './species.component.scss'
 })
 export class SpeciesComponent implements OnInit {
-  private readonly api = inject(ApiService);
-  private readonly fb = inject(FormBuilder);
-  private readonly snackBar = inject(MatSnackBar);
-  avatarService = inject(AvatarService);
+  readonly displayedColumns: string[] = ['avatar', 'name', 'powerLevel', 'specialAbility', 'victories'];
 
   species = signal<Species[]>([]);
   loading = signal(false);
   submitting = signal(false);
 
-  displayedColumns: string[] = ['avatar', 'name', 'powerLevel', 'specialAbility', 'victories'];
+  speciesForm: FormGroup;
 
-  speciesForm: FormGroup = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-    powerLevel: [null, [Validators.required, Validators.min(1), Validators.max(9999)]],
-    specialAbility: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]]
-  });
+  constructor(
+    private readonly api: ApiService,
+    private readonly fb: FormBuilder,
+    private readonly snackBar: MatSnackBar,
+    readonly avatarService: AvatarService
+  ) {
+    this.speciesForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      powerLevel: [null, [Validators.required, Validators.min(1), Validators.max(9999)]],
+      specialAbility: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(200)]]
+    });
+  }
 
   ngOnInit(): void {
     this.loadSpecies();
@@ -84,9 +88,9 @@ export class SpeciesComponent implements OnInit {
 
     this.submitting.set(true);
     const dto: CreateSpeciesDto = {
-      name: this.speciesForm.value.name.trim(),
+      name: (this.speciesForm.value.name as string).trim(),
       powerLevel: Number(this.speciesForm.value.powerLevel),
-      specialAbility: this.speciesForm.value.specialAbility.trim()
+      specialAbility: (this.speciesForm.value.specialAbility as string).trim()
     };
 
     this.api.createSpecies(dto).subscribe({

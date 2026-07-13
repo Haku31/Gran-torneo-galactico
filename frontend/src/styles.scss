@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
+@use './styles/variables';
 @include mat.core();
 
-// Tema oscuro custom para Angular Material
 $dark-primary: mat.m2-define-palette(mat.$m2-deep-purple-palette, 300, 100, 500);
 $dark-accent: mat.m2-define-palette(mat.$m2-amber-palette, A200);
 $dark-theme: mat.m2-define-dark-theme((
@@ -13,72 +13,94 @@ $dark-theme: mat.m2-define-dark-theme((
 
 html, body {
   height: 100%;
-  background: #000005;
-  color: rgba(210, 205, 255, 0.92);
-  font-family: 'Cinzel', serif;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
 }
 
-// Scrollbar épica
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000005; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, #9664ff, gold);
   border-radius: 3px;
 }
 
-// Override Material table para tema oscuro
+// Sin esto el Material theme sobreescribe el fondo con su color de superficie
 .mat-mdc-table {
   background: transparent !important;
 }
-.mat-mdc-row, .mat-mdc-header-row {
+.mat-mdc-row,
+.mat-mdc-header-row {
   background: transparent !important;
 }
-.mat-mdc-cell, .mat-mdc-header-cell {
-  color: rgba(210, 205, 255, 0.9) !important;
-  border-bottom-color: rgba(150, 100, 255, 0.2) !important;
-  font-family: 'Cinzel', serif !important;
-}
+
+.mat-mdc-cell,
 .mat-mdc-header-cell {
-  color: gold !important;
+  color: var(--color-text-primary) !important;
+  border-bottom-color: rgba(150, 100, 255, 0.2) !important;
+  font-family: var(--font-body) !important;
+}
+
+.mat-mdc-header-cell {
+  color: var(--color-accent-gold) !important;
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
 }
 
-// Override Material form fields
 .mat-mdc-form-field {
-  .mdc-floating-label { color: rgba(180, 150, 255, 0.8) !important; font-family: 'Cinzel', serif !important; }
+  .mdc-floating-label {
+    color: rgba(180, 150, 255, 0.8) !important;
+    font-family: var(--font-body) !important;
+  }
+
   .mdc-text-field--outlined .mdc-notched-outline__leading,
   .mdc-text-field--outlined .mdc-notched-outline__notch,
   .mdc-text-field--outlined .mdc-notched-outline__trailing {
     border-color: rgba(150, 100, 255, 0.4) !important;
   }
+
   .mdc-text-field--focused .mdc-notched-outline__leading,
   .mdc-text-field--focused .mdc-notched-outline__notch,
   .mdc-text-field--focused .mdc-notched-outline__trailing {
-    border-color: gold !important;
+    border-color: var(--color-accent-gold) !important;
   }
-  input, textarea { color: white !important; font-family: 'Cinzel', serif !important; }
+
+  input,
+  textarea {
+    color: white !important;
+    font-family: var(--font-body) !important;
+  }
 }
 
-// Override select
-.mat-mdc-select-value-text { color: white !important; font-family: 'Cinzel', serif !important; }
-.mat-mdc-option { font-family: 'Cinzel', serif !important; background: #0d0d2b !important; color: rgba(210,205,255,0.9) !important; }
-.mat-mdc-option:hover { background: rgba(150,100,255,0.2) !important; }
+.mat-mdc-select-value-text {
+  color: white !important;
+  font-family: var(--font-body) !important;
+}
 
-// Override buttons
+.mat-mdc-option {
+  font-family: var(--font-body) !important;
+  background: #0d0d2b !important;
+  color: var(--color-text-primary) !important;
+}
+
+.mat-mdc-option:hover {
+  background: rgba(150, 100, 255, 0.2) !important;
+}
+
 .mat-mdc-raised-button.mat-primary {
   background: linear-gradient(135deg, #5a2d9e, #9664ff) !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: var(--font-body) !important;
   letter-spacing: 0.08em !important;
 }
+
 .mat-mdc-raised-button.mat-accent {
-  background: linear-gradient(135deg, #b8860b, gold) !important;
+  background: linear-gradient(135deg, #b8860b, var(--color-accent-gold)) !important;
   color: #000 !important;
-  font-family: 'Cinzel', serif !important;
+  font-family: var(--font-body) !important;
 }
 
-// Panel de select dropdown
+// Sin esto el overlay del CDK queda con el fondo blanco del tema por defecto
 .cdk-overlay-pane .mat-mdc-select-panel {
   background: #0d0d2b !important;
-  border: 1px solid rgba(150,100,255,0.3) !important;
+  border: var(--border-violet) !important;
 }

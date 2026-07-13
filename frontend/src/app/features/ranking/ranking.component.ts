@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -30,17 +30,19 @@ import { Species } from '../../core/models/models';
   styleUrl: './ranking.component.scss'
 })
 export class RankingComponent implements OnInit {
-  private readonly api = inject(ApiService);
-  private readonly snackBar = inject(MatSnackBar);
+  readonly displayedColumns: string[] = ['position', 'name', 'powerLevel', 'specialAbility', 'victories'];
 
   ranking = signal<Species[]>([]);
   loading = signal(false);
 
-  displayedColumns: string[] = ['position', 'name', 'powerLevel', 'specialAbility', 'victories'];
-
   rankingWithPosition = computed(() =>
     this.ranking().map((species, index) => ({ ...species, position: index + 1 }))
   );
+
+  constructor(
+    private readonly api: ApiService,
+    private readonly snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.loadRanking();

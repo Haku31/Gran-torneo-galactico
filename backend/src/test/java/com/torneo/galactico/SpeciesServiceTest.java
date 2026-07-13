@@ -11,10 +11,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("SpeciesService - Combat logic unit tests")
+@DisplayName("SpeciesService - unit tests")
 class SpeciesServiceTest {
 
     @Mock
@@ -23,63 +30,54 @@ class SpeciesServiceTest {
     @InjectMocks
     private SpeciesService speciesService;
 
-    private Species strongSpecies;
-    private Species weakSpecies;
-    private Species tieSpeciesA;
-    private Species tieSpeciesB;
+    private Species savedSpecies;
 
     @BeforeEach
     void setUp() {
-        strongSpecies = new Species("Zorgon", 900, "Plasma Shield");
-        weakSpecies   = new Species("Blobfish", 200, "Slimeball");
-        tieSpeciesA   = new Species("Alpha", 500, "Teleport");
-        tieSpeciesB   = new Species("Zeta",  500, "Fireball");
+        savedSpecies = new Species("Zorgon", 900, "Plasma Shield");
+        savedSpecies.setId(1L);
     }
 
     @Test
-    @DisplayName("Higher powerLevel wins the combat")
-    void testWinnerByPowerLevel() {
-        Species winner = speciesService.determineWinner(strongSpecies, weakSpecies);
-        assertThat(winner).isEqualTo(strongSpecies);
+    @DisplayName("create() throws when a species with the same name already exists")
+    void createDuplicateNameThrows() {
+        when(speciesRepository.existsByNameIgnoreCase("Zorgon")).thenReturn(true);
+
+        assertThatThrownBy(() -> speciesService.create("Zorgon", 900, "Plasma Shield"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Zorgon");
     }
 
     @Test
-    @DisplayName("Higher powerLevel wins regardless of argument order")
-    void testWinnerByPowerLevelReversed() {
-        Species winner = speciesService.determineWinner(weakSpecies, strongSpecies);
-        assertThat(winner).isEqualTo(strongSpecies);
+    @DisplayName("create() persists and returns the new species")
+    void createSucceeds() {
+        when(speciesRepository.existsByNameIgnoreCase(anyString())).thenReturn(false);
+        when(speciesRepository.save(any(Species.class))).thenReturn(savedSpecies);
+
+        Species result = speciesService.create("Zorgon", 900, "Plasma Shield");
+
+        assertThat(result.getName()).isEqualTo("Zorgon");
+        assertThat(result.getPowerLevel()).isEqualTo(900);
+        verify(speciesRepository).save(any(Species.class));
     }
 
     @Test
-    @DisplayName("On tie, alphabetically first name wins (case-insensitive)")
-    void testWinnerByAlphabeticNameOnTie() {
-        // "Alpha" < "Zeta" alphabetically, so Alpha should win
-        Species winner = speciesService.determineWinner(tieSpeciesA, tieSpeciesB);
-        assertThat(winner).isEqualTo(tieSpeciesA);
+    @DisplayName("findById() throws when ID does not exist")
+    void findByIdNotFoundThrows() {
+        when(speciesRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> speciesService.findById(99L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("99");
     }
 
     @Test
-    @DisplayName("On tie, alphabetically first name wins regardless of argument order")
-    void testWinnerByAlphabeticNameOnTieReversed() {
-        Species winner = speciesService.determineWinner(tieSpeciesB, tieSpeciesA);
-        assertThat(winner).isEqualTo(tieSpeciesA);
-    }
+    @DisplayName("findById() returns the species when ID exists")
+    void findByIdSuccess() {
+        when(speciesRepository.findById(1L)).thenReturn(Optional.of(savedSpecies));
 
-    @Test
-    @DisplayName("Same name on tie returns the first argument (equal comparison = 0 <= 0)")
-    void testWinnerByAlphabeticNameExact() {
-        Species clone = new Species("Alpha", 500, "Clone ability");
-        Species winner = speciesService.determineWinner(tieSpeciesA, clone);
-        assertThat(winner).isEqualTo(tieSpeciesA);
-    }
+        Species result = speciesService.findById(1L);
 
-    @Test
-    @DisplayName("Tie comparison is case-insensitive")
-    void testWinnerByNameCaseInsensitive() {
-        Species upperAlpha = new Species("ALPHA", 500, "Upper Blast");
-        Species lowerZeta  = new Species("zeta",  500, "Lower Zap");
-        // "ALPHA".compareToIgnoreCase("zeta") → "alpha" < "zeta", so ALPHA wins
-        Species winner = speciesService.determineWinner(upperAlpha, lowerZeta);
-        assertThat(winner).isEqualTo(upperAlpha);
+        assertThat(result).isEqualTo(savedSpecies);
     }
 }

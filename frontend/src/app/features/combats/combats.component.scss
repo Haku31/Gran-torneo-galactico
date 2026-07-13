@@ -5,7 +5,7 @@
 }
 
 .page-title {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   font-weight: 900;
   text-align: center;
@@ -19,18 +19,18 @@
 }
 
 .page-subtitle {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.9rem;
-  color: rgba(180, 150, 255, 0.7);
+  color: var(--color-text-muted);
   text-align: center;
   letter-spacing: 0.1em;
   margin-bottom: 2rem;
 }
 
-// Cards
 .cosmic-card {
   background: rgba(8, 8, 30, 0.75);
-  border: 1px solid rgba(150, 100, 255, 0.2);
+  border: var(--border-violet);
+  border-color: rgba(150, 100, 255, 0.2);
   border-radius: 12px;
   padding: 1.75rem;
   backdrop-filter: blur(10px);
@@ -71,13 +71,13 @@
 }
 
 .card-icon {
-  color: gold;
+  color: var(--color-accent-gold);
   font-size: 1.2rem;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
 }
 
 .card-title {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1rem;
   font-weight: 700;
   color: white;
@@ -86,7 +86,7 @@
 }
 
 .card-subtitle {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.8rem;
   color: rgba(180, 150, 255, 0.6);
   letter-spacing: 0.06em;
@@ -94,7 +94,7 @@
 }
 
 .history-count {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.8rem;
   color: rgba(150, 100, 255, 0.7);
   background: rgba(150, 100, 255, 0.1);
@@ -103,7 +103,6 @@
   border: 1px solid rgba(150, 100, 255, 0.2);
 }
 
-// Combat selectors
 .combat-selectors {
   display: flex;
   gap: 1rem;
@@ -118,7 +117,7 @@
 }
 
 .fighter-label {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.7rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -139,7 +138,7 @@
 }
 
 .vs-text {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1.4rem;
   font-weight: 900;
   color: rgba(150, 100, 255, 0.8);
@@ -149,7 +148,6 @@
   letter-spacing: 0.1em;
 }
 
-// Action buttons
 .action-buttons {
   display: flex;
   gap: 1rem;
@@ -166,14 +164,14 @@
   color: white;
   border: 1px solid rgba(150, 100, 255, 0.5);
   border-radius: 8px;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 20px rgba(150, 100, 255, 0.3);
+  box-shadow: var(--glow-violet);
 
   &:hover:not(:disabled) {
     box-shadow: 0 0 35px rgba(150, 100, 255, 0.6), 0 0 60px rgba(150, 100, 255, 0.2);
@@ -194,11 +192,11 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.5rem;
-  background: linear-gradient(135deg, #b8860b 0%, #ffd700 50%, #b8860b 100%);
+  background: linear-gradient(135deg, #b8860b 0%, var(--color-accent-gold) 50%, #b8860b 100%);
   color: #0a0508;
   border: none;
   border-radius: 8px;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -208,7 +206,7 @@
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
 
   &:hover:not(:disabled) {
-    box-shadow: 0 0 35px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.2);
+    box-shadow: var(--glow-gold), 0 0 60px rgba(255, 215, 0, 0.2);
     transform: translateY(-2px);
   }
 
@@ -228,9 +226,9 @@
   padding: 0.6rem 1.2rem;
   background: transparent;
   color: rgba(200, 180, 255, 0.7);
-  border: 1px solid rgba(150, 100, 255, 0.3);
+  border: var(--border-violet);
   border-radius: 8px;
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -251,7 +249,6 @@
   mat-icon { font-size: 16px; height: 16px; width: 16px; }
 }
 
-// Result card
 .result-card {
   background: linear-gradient(135deg,
     rgba(10, 5, 30, 0.95) 0%,
@@ -264,7 +261,7 @@
     0 0 80px rgba(150, 100, 255, 0.1);
 
   &::before {
-    background: linear-gradient(to right, transparent, gold, rgba(150, 100, 255, 0.5), gold, transparent);
+    background: linear-gradient(to right, transparent, var(--color-accent-gold), rgba(150, 100, 255, 0.5), var(--color-accent-gold), transparent);
     opacity: 0.5;
   }
 }
@@ -288,14 +285,14 @@
 }
 
 .result-title {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1rem;
   color: white;
   margin-bottom: 0.25rem;
 }
 
 .result-date {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.75rem;
   color: rgba(180, 150, 255, 0.6);
   letter-spacing: 0.06em;
@@ -321,11 +318,11 @@
 
 .fighter-orb {
   font-size: 3rem;
-  filter: drop-shadow(0 0 15px rgba(150, 100, 255, 0.5));
+  filter: drop-shadow(var(--glow-violet));
 }
 
 .fighter-name-result {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
   color: rgba(220, 210, 255, 0.9);
@@ -334,11 +331,11 @@
 }
 
 .result-vs {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: 1.8rem;
   font-weight: 900;
   color: rgba(255, 255, 255, 0.25);
-  text-shadow: 0 0 20px rgba(150, 100, 255, 0.4);
+  text-shadow: var(--glow-violet);
   padding: 0 0.5rem;
 }
 
@@ -355,7 +352,7 @@
 }
 
 .winner-label {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.7rem;
   letter-spacing: 0.25em;
   color: rgba(255, 215, 0, 0.6);
@@ -364,10 +361,10 @@
 }
 
 .winner-name {
-  font-family: 'Cinzel Decorative', serif;
+  font-family: var(--font-title);
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 900;
-  color: gold;
+  color: var(--color-accent-gold);
   text-shadow:
     0 0 20px rgba(255, 215, 0, 0.8),
     0 0 40px rgba(255, 215, 0, 0.4),
@@ -385,7 +382,6 @@
   }
 }
 
-// Loading
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -395,13 +391,12 @@
 }
 
 .loading-text {
-  font-family: 'Cinzel', serif;
-  color: rgba(180, 150, 255, 0.7);
+  font-family: var(--font-body);
+  color: var(--color-text-muted);
   font-size: 0.9rem;
   letter-spacing: 0.08em;
 }
 
-// Empty state
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -417,7 +412,7 @@
   }
 
   p {
-    font-family: 'Cinzel', serif;
+    font-family: var(--font-body);
     color: rgba(150, 130, 200, 0.6);
     font-size: 0.95rem;
     letter-spacing: 0.05em;
@@ -430,7 +425,6 @@
   }
 }
 
-// Table
 .cosmic-table {
   width: 100%;
 }
@@ -459,7 +453,7 @@
   align-items: center;
   gap: 5px;
   background: rgba(255, 215, 0, 0.1);
-  color: gold;
+  color: var(--color-accent-gold);
   padding: 3px 12px;
   border-radius: 20px;
   font-weight: 600;
@@ -468,7 +462,6 @@
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
-// Table avatar thumbnails
 .cell-with-avatar {
   display: flex;
   align-items: center;
@@ -485,7 +478,6 @@
   flex-shrink: 0;
 }
 
-// Small avatar in last combat result card
 .fighter-avatar-small {
   width: 72px;
   height: 72px;
@@ -493,7 +485,7 @@
   border: 2px solid rgba(150, 100, 255, 0.5);
   padding: 6px;
   background: rgba(20, 10, 50, 0.8);
-  box-shadow: 0 0 20px rgba(150, 100, 255, 0.3);
+  box-shadow: var(--glow-violet);
 
   img {
     width: 100%;

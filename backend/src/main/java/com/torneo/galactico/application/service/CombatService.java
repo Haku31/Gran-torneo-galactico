@@ -31,7 +31,7 @@ public class CombatService {
         Species species1 = speciesService.findById(species1Id);
         Species species2 = speciesService.findById(species2Id);
 
-        Species winner = speciesService.determineWinner(species1, species2);
+        Species winner = determineWinner(species1, species2);
         speciesService.incrementVictories(winner);
 
         Combat combat = new Combat(
@@ -48,7 +48,7 @@ public class CombatService {
     }
 
     public Combat fightRandom() {
-        List<Species> all = speciesService.findAllSpecies();
+        List<Species> all = speciesService.findAll();
         if (all.size() < 2) {
             throw new IllegalStateException("At least 2 species are required for a random combat.");
         }
@@ -65,5 +65,18 @@ public class CombatService {
     @Transactional(readOnly = true)
     public List<Combat> findAll() {
         return combatRepository.findAll();
+    }
+
+    // Tie-breaking by alphabetical order is a deliberate game rule, not just a fallback.
+    // Higher powerLevel always wins; equal powerLevel favors the lexicographically earlier name.
+    public Species determineWinner(Species s1, Species s2) {
+        if (s1.getPowerLevel() > s2.getPowerLevel()) {
+            return s1;
+        } else if (s2.getPowerLevel() > s1.getPowerLevel()) {
+            return s2;
+        } else {
+            int cmp = s1.getName().compareToIgnoreCase(s2.getName());
+            return cmp <= 0 ? s1 : s2;
+        }
     }
 }

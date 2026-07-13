@@ -1,6 +1,6 @@
 .app-shell {
   min-height: 100vh;
-  background: radial-gradient(ellipse at top, #0a0a2e 0%, #000005 50%, #000000 100%);
+  background: radial-gradient(ellipse at top, #0a0a2e 0%, var(--color-bg) 50%, #000000 100%);
   background-attachment: fixed;
   position: relative;
 
@@ -26,7 +26,7 @@
   padding: 1rem 2rem;
   background: rgba(5, 5, 25, 0.85);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(150, 100, 255, 0.3);
+  border-bottom: var(--border-violet);
   box-shadow: 0 2px 30px rgba(100, 60, 200, 0.2);
 
   &::after {
@@ -36,18 +36,18 @@
     left: 10%;
     right: 10%;
     height: 1px;
-    background: linear-gradient(to right, transparent, gold, transparent);
+    background: linear-gradient(to right, transparent, var(--color-accent-gold), transparent);
     opacity: 0.4;
   }
 }
 
 .nav-brand {
   .brand-text {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: var(--font-title);
     font-size: 1.1rem;
     font-weight: 700;
     color: white;
-    text-shadow: 0 0 20px rgba(150, 100, 255, 0.8);
+    text-shadow: var(--glow-violet);
     letter-spacing: 0.05em;
   }
 }
@@ -58,7 +58,7 @@
 }
 
 .nav-link {
-  font-family: 'Cinzel', serif;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 600;
   color: rgba(200, 190, 255, 0.7);
@@ -76,13 +76,14 @@
     left: 0;
     width: 0;
     height: 1px;
-    background: gold;
+    background: var(--color-accent-gold);
     transition: width 0.3s ease;
-    box-shadow: 0 0 8px gold;
+    box-shadow: 0 0 8px var(--color-accent-gold);
   }
 
-  &:hover, &.active {
-    color: gold;
+  &:hover,
+  &.active {
+    color: var(--color-accent-gold);
 
     &::after { width: 100%; }
   }

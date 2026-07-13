@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -16,5 +16,6 @@ import { NgIf } from '@angular/common';
 })
 export class AppComponent {
   title = 'Gran Torneo Galáctico';
-  readonly router = inject(Router);
+
+  constructor(readonly router: Router) {}
 }

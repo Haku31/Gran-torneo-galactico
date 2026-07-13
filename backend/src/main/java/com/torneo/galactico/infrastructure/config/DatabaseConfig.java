@@ -12,14 +12,18 @@ import java.net.URI;
 @Configuration
 public class DatabaseConfig {
 
-    @Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/torneo_galactico}")
-    private String databaseUrl;
+    private final String databaseUrl;
+    private final String defaultUsername;
+    private final String defaultPassword;
 
-    @Value("${DATABASE_USERNAME:torneo_user}")
-    private String defaultUsername;
-
-    @Value("${DATABASE_PASSWORD:torneo_pass}")
-    private String defaultPassword;
+    public DatabaseConfig(
+            @Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/torneo_galactico}") String databaseUrl,
+            @Value("${DATABASE_USERNAME:torneo_user}") String defaultUsername,
+            @Value("${DATABASE_PASSWORD:torneo_pass}") String defaultPassword) {
+        this.databaseUrl = databaseUrl;
+        this.defaultUsername = defaultUsername;
+        this.defaultPassword = defaultPassword;
+    }
 
     @Bean
     @Primary
@@ -37,6 +41,8 @@ public class DatabaseConfig {
         String username = defaultUsername;
         String password = defaultPassword;
 
+        // Credentials embedded in the URL (e.g. Heroku-style postgres:// URIs) take precedence
+        // over the separate USERNAME/PASSWORD env vars.
         if (uri.getUserInfo() != null) {
             String[] userInfo = uri.getUserInfo().split(":", 2);
             username = userInfo[0];
