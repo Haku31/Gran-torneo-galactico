@@ -11,3 +11,7 @@
   --glow-gold: 0 0 20px rgba(255, 215, 0, 0.5);
   --glow-violet: 0 0 20px rgba(150, 100, 255, 0.5);
 }
+
+// SCSS breakpoint variables
+$bp-mobile: 640px;
+$bp-tablet: 1024px;

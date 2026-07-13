@@ -295,3 +295,13 @@
   color: rgba(255, 220, 100, 0.9);
   text-shadow: var(--glow-gold);
 }
+
+@media (max-width: 640px) {
+  .fighters { gap: 1rem; padding: 1rem; }
+  .fighter-avatar { width: 90px; height: 90px; }
+  .fighter-name { font-size: 0.85rem; }
+  .vs-text { font-size: 2rem; }
+  .result-container { gap: 1.5rem; padding: 1rem; }
+  .winner-avatar { width: 110px; height: 110px; }
+  .winner-name { font-size: 1.2rem; }
+}

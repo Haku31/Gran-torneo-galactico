@@ -3,12 +3,31 @@
     <div class="nav-brand">
       <span class="brand-text">Gran Torneo Galáctico</span>
     </div>
-    <div class="nav-links">
-      <a class="nav-link" routerLink="/ranking" routerLinkActive="active">Ranking</a>
-      <a class="nav-link" routerLink="/species" routerLinkActive="active">Especies</a>
-      <a class="nav-link" routerLink="/combats" routerLinkActive="active">Combates</a>
+
+    <!-- Links desktop -->
+    <div class="nav-links desktop-links">
+      <a class="nav-link" routerLink="/ranking" routerLinkActive="active" (click)="closeMenu()">Ranking</a>
+      <a class="nav-link" routerLink="/species" routerLinkActive="active" (click)="closeMenu()">Especies</a>
+      <a class="nav-link" routerLink="/combats" routerLinkActive="active" (click)="closeMenu()">Combates</a>
     </div>
+
+    <!-- Botón hamburguesa (solo móvil) -->
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen()" aria-label="Menú">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+
+  <!-- Menú móvil desplegable -->
+  @if (menuOpen()) {
+    <div class="mobile-menu" (click)="closeMenu()">
+      <a class="mobile-link" routerLink="/ranking" routerLinkActive="active">Ranking</a>
+      <a class="mobile-link" routerLink="/species" routerLinkActive="active">Especies</a>
+      <a class="mobile-link" routerLink="/combats" routerLinkActive="active">Combates</a>
+    </div>
+  }
+
   <main class="cosmic-main">
     <router-outlet></router-outlet>
   </main>

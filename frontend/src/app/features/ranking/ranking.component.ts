@@ -30,7 +30,9 @@ import { Species } from '../../core/models/models';
   styleUrl: './ranking.component.scss'
 })
 export class RankingComponent implements OnInit {
-  readonly displayedColumns: string[] = ['position', 'name', 'powerLevel', 'specialAbility', 'victories'];
+  readonly displayedColumns: string[] = window.innerWidth < 640
+    ? ['position', 'name', 'powerLevel', 'victories']
+    : ['position', 'name', 'powerLevel', 'specialAbility', 'victories'];
 
   ranking = signal<Species[]>([]);
   loading = signal(false);

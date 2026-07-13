@@ -37,7 +37,9 @@ import { Species, CreateSpeciesDto } from '../../core/models/models';
   styleUrl: './species.component.scss'
 })
 export class SpeciesComponent implements OnInit {
-  readonly displayedColumns: string[] = ['avatar', 'name', 'powerLevel', 'specialAbility', 'victories'];
+  readonly displayedColumns: string[] = window.innerWidth < 640
+    ? ['avatar', 'name', 'powerLevel', 'victories']
+    : ['avatar', 'name', 'powerLevel', 'specialAbility', 'victories'];
 
   species = signal<Species[]>([]);
   loading = signal(false);

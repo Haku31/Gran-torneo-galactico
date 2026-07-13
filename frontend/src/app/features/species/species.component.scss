@@ -319,3 +319,8 @@
   border-color: rgba(255, 215, 0, 0.6);
   box-shadow: 0 0 18px rgba(255, 215, 0, 0.35);
 }
+
+@media (max-width: 640px) {
+  .species-layout { flex-direction: column; }
+  .table-container { overflow-x: auto; }
+}

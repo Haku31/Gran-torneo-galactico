@@ -217,3 +217,9 @@
     opacity: 1;
   }
 }
+
+@media (max-width: 640px) {
+  .content { padding: 1.5rem 1rem; }
+  .legend { font-size: 0.85rem; line-height: 1.8; }
+  .start-btn { padding: 0.8rem 2rem; font-size: 1rem; letter-spacing: 0.15em; }
+}

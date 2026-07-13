@@ -256,3 +256,12 @@
     letter-spacing: 0.05em;
   }
 }
+
+@media (max-width: 640px) {
+  .podium { flex-direction: column; align-items: center; gap: 1rem; }
+  .podium-card { width: 100%; max-width: 280px; }
+  .podium {
+    .podium-card.gold { order: -1; }
+  }
+  .ranking-table-container { overflow-x: auto; }
+}

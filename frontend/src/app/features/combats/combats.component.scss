@@ -494,3 +494,9 @@
     object-fit: cover;
   }
 }
+
+@media (max-width: 640px) {
+  .combat-selectors { flex-direction: column; }
+  .action-buttons { flex-direction: column; gap: 0.5rem; }
+  .table-container { overflow-x: auto; }
+}

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router, RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -16,6 +16,10 @@ import { NgIf } from '@angular/common';
 })
 export class AppComponent {
   title = 'Gran Torneo Galáctico';
+
+  menuOpen = signal(false);
+  toggleMenu() { this.menuOpen.update(v => !v); }
+  closeMenu() { this.menuOpen.set(false); }
 
   constructor(readonly router: Router) {}
 }
