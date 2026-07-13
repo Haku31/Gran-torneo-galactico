@@ -1,3 +1,13 @@
+<!-- Slot Machine Overlay (combate aleatorio) -->
+@if (showSlotMachine()) {
+  <app-slot-machine
+    [allSpecies]="species()"
+    [fighter1]="arenaFighter1()"
+    [fighter2]="arenaFighter2()"
+    (selectionComplete)="onSlotComplete()">
+  </app-slot-machine>
+}
+
 <!-- Combat Arena Overlay -->
 @if (showArena()) {
   <app-combat-arena

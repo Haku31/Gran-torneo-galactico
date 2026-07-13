@@ -17,6 +17,7 @@ import { ApiService } from '../../core/services/api.service';
 import { AvatarService } from '../../core/services/avatar.service';
 import { Species, Combat } from '../../core/models/models';
 import { CombatArenaComponent } from './combat-arena/combat-arena.component';
+import { SlotMachineComponent } from './slot-machine/slot-machine.component';
 
 @Component({
   selector: 'app-combats',
@@ -35,7 +36,8 @@ import { CombatArenaComponent } from './combat-arena/combat-arena.component';
     MatSnackBarModule,
     MatDividerModule,
     MatChipsModule,
-    CombatArenaComponent
+    CombatArenaComponent,
+    SlotMachineComponent
   ],
   templateUrl: './combats.component.html',
   styleUrl: './combats.component.scss'
@@ -51,6 +53,7 @@ export class CombatsComponent implements OnInit {
   randomCombating = signal(false);
 
   showArena = signal(false);
+  showSlotMachine = signal(false);
   arenaFighter1 = signal<Species | null>(null);
   arenaFighter2 = signal<Species | null>(null);
   arenaWinner = signal<Species | null>(null);
@@ -148,30 +151,37 @@ export class CombatsComponent implements OnInit {
       return;
     }
 
-    const shuffled = [...speciesList].sort(() => Math.random() - 0.5);
-    const fighter1 = shuffled[0];
-    const fighter2 = shuffled[1];
-
     this.randomCombating.set(true);
-    this.launchArena(fighter1, fighter2, () =>
-      this.api.randomCombat().subscribe({
-        next: (combat) => {
-          const winner = this.species().find(s => s.name === combat.winnerName) ?? null;
-          // The API may pick different fighters than our local shuffle, so sync the display
-          const actualFighter1 = this.species().find(s => s.name === combat.species1Name) ?? fighter1;
-          const actualFighter2 = this.species().find(s => s.name === combat.species2Name) ?? fighter2;
-          this.arenaFighter1.set(actualFighter1);
-          this.arenaFighter2.set(actualFighter2);
-          this.arenaWinner.set(winner);
-          this.pendingCombat.set(combat);
-        },
-        error: (err) => {
-          console.error('Error en combate aleatorio:', err);
-          this.closeArenaOnError('Error al ejecutar combate aleatorio. Asegúrese de tener al menos 2 especies registradas.');
-          this.randomCombating.set(false);
-        }
-      })
-    );
+    this.arenaFighter1.set(null);
+    this.arenaFighter2.set(null);
+    this.arenaWinner.set(null);
+    this.pendingCombat.set(null);
+
+    // Llama al API inmediatamente en background
+    this.api.randomCombat().subscribe({
+      next: (combat) => {
+        const winner = this.species().find(s => s.name === combat.winnerName) ?? null;
+        const actualFighter1 = this.species().find(s => s.name === combat.species1Name) ?? null;
+        const actualFighter2 = this.species().find(s => s.name === combat.species2Name) ?? null;
+        this.arenaFighter1.set(actualFighter1);
+        this.arenaFighter2.set(actualFighter2);
+        this.arenaWinner.set(winner);
+        this.pendingCombat.set(combat);
+        // Muestra el slot machine ahora que ya tenemos los datos reales
+        this.showSlotMachine.set(true);
+      },
+      error: (err) => {
+        console.error('Error en combate aleatorio:', err);
+        this.randomCombating.set(false);
+        this.snackBar.open('Error al ejecutar combate aleatorio. Asegúrese de tener al menos 2 especies registradas.', 'Cerrar', { duration: 5000 });
+      }
+    });
+  }
+
+  onSlotComplete(): void {
+    this.showSlotMachine.set(false);
+    // La arena ya tiene los datos seteados, solo mostrarla
+    this.showArena.set(true);
   }
 
   onArenaComplete(): void {

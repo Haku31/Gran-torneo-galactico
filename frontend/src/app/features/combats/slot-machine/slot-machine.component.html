@@ -1,0 +1,76 @@
+<div class="casino-overlay">
+  <!-- Partículas doradas de fondo -->
+  <div class="casino-particles">
+    @for (p of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; track p) {
+      <div class="coin" [style.--i]="p"></div>
+    }
+  </div>
+
+  <div class="slot-machine">
+    <!-- Título -->
+    <div class="slot-title">
+      <span class="slot-title-text">Seleccionando Combatientes</span>
+      @if (!showResult) {
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+      }
+    </div>
+
+    <!-- Rodillos -->
+    <div class="reels-container">
+      <!-- Rodillo 1 -->
+      <div class="reel-wrapper" [class.stopped]="reel1Stopped">
+        <div class="reel-label">Combatiente I</div>
+        <div class="reel-window">
+          <div class="reel-content" [class.spinning]="!reel1Stopped" [class.stopped]="reel1Stopped">
+            <div class="reel-item">
+              <div class="avatar-ring" [class.gold]="reel1Stopped">
+                <img [src]="getAvatar(currentReel1)" [alt]="currentReel1.name" />
+              </div>
+              <div class="species-name">{{ currentReel1.name }}</div>
+              <div class="species-power">&#9889; {{ currentReel1.powerLevel }}</div>
+            </div>
+          </div>
+          <!-- Efecto de scanline para sensación de casino -->
+          <div class="scanlines"></div>
+          <!-- Indicadores laterales (como los de las slots) -->
+          <div class="reel-arrow reel-arrow-top">&#9660;</div>
+          <div class="reel-arrow reel-arrow-bottom">&#9650;</div>
+        </div>
+      </div>
+
+      <!-- Separador VS -->
+      <div class="vs-divider">
+        <div class="vs-symbol" [class.active]="showResult">VS</div>
+        <div class="vs-line"></div>
+      </div>
+
+      <!-- Rodillo 2 -->
+      <div class="reel-wrapper" [class.stopped]="reel2Stopped">
+        <div class="reel-label">Combatiente II</div>
+        <div class="reel-window">
+          <div class="reel-content" [class.spinning]="!reel2Stopped" [class.stopped]="reel2Stopped">
+            <div class="reel-item">
+              <div class="avatar-ring" [class.gold]="reel2Stopped">
+                <img [src]="getAvatar(currentReel2)" [alt]="currentReel2.name" />
+              </div>
+              <div class="species-name">{{ currentReel2.name }}</div>
+              <div class="species-power">&#9889; {{ currentReel2.powerLevel }}</div>
+            </div>
+          </div>
+          <div class="scanlines"></div>
+          <div class="reel-arrow reel-arrow-top">&#9660;</div>
+          <div class="reel-arrow reel-arrow-bottom">&#9650;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Banner de resultado cuando ambos paran -->
+    @if (showResult) {
+      <div class="result-banner">
+        <span class="result-text">&#161;Que comience la batalla!</span>
+      </div>
+    }
+  </div>
+</div>
