@@ -495,8 +495,88 @@
   }
 }
 
+.desktop-only { display: block; }
+.mobile-only  { display: none; }
+
+// Tarjetas de combate para móvil
+.combat-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.combat-card {
+  background: rgba(15, 10, 40, 0.7);
+  border: 1px solid rgba(150, 100, 255, 0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.combat-card-fighters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-fighter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.card-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(150, 100, 255, 0.4);
+  background: rgba(10, 10, 40, 0.8);
+  object-fit: cover;
+}
+
+.card-fighter-name {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: rgba(210, 205, 255, 0.85);
+  text-align: center;
+  word-break: break-word;
+}
+
+.card-vs {
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  color: rgba(150, 100, 255, 0.8);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.combat-card-winner {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: gold;
+  text-shadow: var(--glow-gold);
+  text-align: center;
+  padding: 0.3rem 0;
+  border-top: 1px solid rgba(150, 100, 255, 0.15);
+  border-bottom: 1px solid rgba(150, 100, 255, 0.15);
+}
+
+.combat-card-date {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: rgba(150, 140, 200, 0.6);
+  text-align: center;
+}
+
 @media (max-width: 640px) {
+  .desktop-only { display: none; }
+  .mobile-only  { display: block; }
   .combat-selectors { flex-direction: column; }
   .action-buttons { flex-direction: column; gap: 0.5rem; }
-  .table-container { overflow-x: auto; }
 }

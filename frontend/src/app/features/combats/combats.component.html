@@ -171,52 +171,77 @@
         <p class="empty-sub">¡Inicia el primer combate galáctico!</p>
       </div>
     } @else {
-      <table mat-table [dataSource]="combats().slice().reverse()" class="cosmic-table">
+      <!-- Tabla desktop -->
+      <div class="table-wrapper desktop-only">
+        <table mat-table [dataSource]="combats().slice().reverse()" class="cosmic-table">
+          <ng-container matColumnDef="species1Name">
+            <th mat-header-cell *matHeaderCellDef>Especie 1</th>
+            <td mat-cell *matCellDef="let combat" class="fighter-cell">
+              <div class="cell-with-avatar">
+                @if (getSpeciesByName(combat.species1Name); as sp) {
+                  <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+                }
+                <span>{{ combat.species1Name }}</span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="species2Name">
+            <th mat-header-cell *matHeaderCellDef>Especie 2</th>
+            <td mat-cell *matCellDef="let combat" class="fighter-cell">
+              <div class="cell-with-avatar">
+                @if (getSpeciesByName(combat.species2Name); as sp) {
+                  <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+                }
+                <span>{{ combat.species2Name }}</span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="winnerName">
+            <th mat-header-cell *matHeaderCellDef>Ganador</th>
+            <td mat-cell *matCellDef="let combat">
+              <div class="cell-with-avatar">
+                @if (getSpeciesByName(combat.winnerName); as sp) {
+                  <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+                }
+                <span class="winner-chip">🏆 {{ combat.winnerName }}</span>
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="fightDate">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let combat" class="date-cell">{{ formatDate(combat.fightDate) }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cosmic-row"></tr>
+        </table>
+      </div>
 
-        <ng-container matColumnDef="species1Name">
-          <th mat-header-cell *matHeaderCellDef>Especie 1</th>
-          <td mat-cell *matCellDef="let combat" class="fighter-cell">
-            <div class="cell-with-avatar">
-              @if (getSpeciesByName(combat.species1Name); as sp) {
-                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
-              }
-              <span>{{ combat.species1Name }}</span>
+      <!-- Tarjetas móvil -->
+      <div class="combat-cards mobile-only">
+        @for (combat of combats().slice().reverse(); track combat.id) {
+          <div class="combat-card">
+            <div class="combat-card-fighters">
+              <div class="card-fighter">
+                @if (getSpeciesByName(combat.species1Name); as sp) {
+                  <img class="card-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+                }
+                <span class="card-fighter-name">{{ combat.species1Name }}</span>
+              </div>
+              <span class="card-vs">VS</span>
+              <div class="card-fighter">
+                @if (getSpeciesByName(combat.species2Name); as sp) {
+                  <img class="card-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
+                }
+                <span class="card-fighter-name">{{ combat.species2Name }}</span>
+              </div>
             </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="species2Name">
-          <th mat-header-cell *matHeaderCellDef>Especie 2</th>
-          <td mat-cell *matCellDef="let combat" class="fighter-cell">
-            <div class="cell-with-avatar">
-              @if (getSpeciesByName(combat.species2Name); as sp) {
-                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
-              }
-              <span>{{ combat.species2Name }}</span>
+            <div class="combat-card-winner">
+              🏆 <span>{{ combat.winnerName }}</span>
             </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="winnerName">
-          <th mat-header-cell *matHeaderCellDef>Ganador</th>
-          <td mat-cell *matCellDef="let combat">
-            <div class="cell-with-avatar">
-              @if (getSpeciesByName(combat.winnerName); as sp) {
-                <img class="table-avatar" [src]="avatarService.getUrl(sp)" [alt]="sp.name" />
-              }
-              <span class="winner-chip">🏆 {{ combat.winnerName }}</span>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="fightDate">
-          <th mat-header-cell *matHeaderCellDef>Fecha</th>
-          <td mat-cell *matCellDef="let combat" class="date-cell">{{ formatDate(combat.fightDate) }}</td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="cosmic-row"></tr>
-      </table>
+            <div class="combat-card-date">{{ formatDate(combat.fightDate) }}</div>
+          </div>
+        }
+      </div>
     }
   </div>
 </div>
